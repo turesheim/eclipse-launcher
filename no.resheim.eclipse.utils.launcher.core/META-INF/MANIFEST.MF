@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OS X Eclipse Launcher Utility Core
+Bundle-SymbolicName: no.resheim.eclipse.utils.launcher.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: no.resheim.eclipse.utils.launcher.core.LauncherPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide;bundle-version="3.8.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: Torkild U. Resheim
