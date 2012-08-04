@@ -59,15 +59,13 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 	 */
 	private String buildCommandLine(String workspace) {
 		String property = System.getProperty(PROP_VM);
+		// Use defaults;
 		if (property == null) {
-			// MessageDialog.openError(window.getShell(),
-			// IDEWorkbenchMessages.OpenWorkspaceAction_errorTitle,
-			// NLS.bind(IDEWorkbenchMessages.OpenWorkspaceAction_errorMessage,
-			// PROP_VM));
-			return null;
+			return "";
 		}
 
 		StringBuffer result = new StringBuffer(512);
+		result.append(" --args ");
 		result.append(property);
 		result.append(NEW_LINE);
 
@@ -79,12 +77,12 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 
 		// append the rest of the args, replacing or adding -data as required
 		property = System.getProperty(PROP_COMMANDS);
-		if (property == null) {
+		if (property == null && workspace != null) {
 			result.append(CMD_DATA);
 			result.append(NEW_LINE);
 			result.append(workspace);
 			result.append(NEW_LINE);
-		} else {
+		} else if (workspace != null) {
 			// find the index of the arg to replace its value
 			int cmd_data_pos = property.lastIndexOf(CMD_DATA);
 			if (cmd_data_pos != -1) {
@@ -125,7 +123,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 					public void run() {
 						try {
 							Runtime.getRuntime().exec(
-									"open -n " + app.getAbsolutePath() + " --args " + buildCommandLine(workspace));
+"open -n " + app.getAbsolutePath() + buildCommandLine(workspace));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}

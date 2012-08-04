@@ -41,13 +41,13 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 		String[] workspaces = data.getRecentWorkspaces();
 		for (int i = 0; i < workspaces.length; i++) {
 			if (workspaces[i] != null && !workspaces[i].equals(current)) {
-				list.add(createCommand(serviceLocator, workspaces[i], workspaces[i]));
+				list.add(createOpenCommand(serviceLocator, workspaces[i], workspaces[i]));
 			}
 		}
 		if (list.size() > 0) {
 			list.add(new Separator());
 		}
-		list.add(createCommand(serviceLocator, "Other...", null));
+		list.add(createOpenCommand(serviceLocator, "Other...", null));
 		return list.toArray(new IContributionItem[list.size()]);
 	}
 
@@ -61,12 +61,14 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 		additions.addContributionItem(submenu, null);
 	}
 
-	public CommandContributionItem createCommand(IServiceLocator serviceLocator, String label, String workspace) {
+	public CommandContributionItem createOpenCommand(IServiceLocator serviceLocator, String label, String workspace) {
 		CommandContributionItemParameter p = new CommandContributionItemParameter(serviceLocator, "",
 				"no.resheim.eclipse.launcherutil.commands.newInstance", SWT.PUSH);
-		Map<Object, Object> parameters = new HashMap<Object, Object>();
-		parameters.put("no.resheim.eclipse.launcherutil.workspace", workspace);
-		p.parameters = parameters;
+		if (workspace != null) {
+			Map<Object, Object> parameters = new HashMap<Object, Object>();
+			parameters.put("no.resheim.eclipse.launcherutil.workspace", workspace);
+			p.parameters = parameters;
+		}
 		p.label = label;
 		CommandContributionItem item = new CommandContributionItem(p);
 		item.setVisible(true);
