@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Torkild U. Resheim.
+ * Copyright (c) 2012 Torkild U. Resheim and others
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -22,7 +22,8 @@ import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 
 /**
  * A command handler that will open up a new Eclipse instance using the same
- * launcher used to opening the current instance.
+ * launcher used to opening the current instance. Virtual machine arguments used
+ * to start the original instance will be passed along.
  * 
  * @author Torkild U. Resheim
  */
@@ -122,8 +123,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 				BusyIndicator.showWhile(null, new Runnable() {
 					public void run() {
 						try {
-							Runtime.getRuntime().exec(
-"open -n " + app.getAbsolutePath() + buildCommandLine(workspace));
+							Runtime.getRuntime().exec("open -n " + app.getAbsolutePath() + buildCommandLine(workspace));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
