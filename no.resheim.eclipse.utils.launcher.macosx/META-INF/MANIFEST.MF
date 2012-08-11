@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: OS X Eclipse Launcher Utility
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: no.resheim.eclipse.utils.launcher.macosx;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: no.resheim.eclipse.utils.launcher.core;bundle-version="1.0.0"
@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.expressions;bundle-version="3.4.400",
  org.eclipse.ui.ide;bundle-version="3.8.0"
-Bundle-Vendor: Torkild U. Resheim
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Localization: OSGI-INF/l10n/bundle

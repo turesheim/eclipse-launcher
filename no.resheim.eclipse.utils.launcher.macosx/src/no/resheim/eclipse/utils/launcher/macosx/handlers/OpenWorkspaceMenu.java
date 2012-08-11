@@ -30,6 +30,8 @@ import org.eclipse.ui.services.IServiceLocator;
 @SuppressWarnings("restriction")
 public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 
+	private static final String COMMAND_ID = "no.resheim.eclipse.launcherutil.commands.newInstance"; //$NON-NLS-1$
+
 	public OpenWorkspaceMenu() {
 	}
 
@@ -47,13 +49,13 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 		if (list.size() > 0) {
 			list.add(new Separator());
 		}
-		list.add(createOpenCommand(serviceLocator, "Other...", null));
+		list.add(createOpenCommand(serviceLocator, Messages.OpenWorkspaceMenu_Other, null));
 		return list.toArray(new IContributionItem[list.size()]);
 	}
 
 	@Override
 	public void createContributionItems(IServiceLocator serviceLocator, IContributionRoot additions) {
-		MenuManager submenu = new MenuManager("Open Workspace");
+		MenuManager submenu = new MenuManager(Messages.OpenWorkspaceMenu_Open);
 		IContributionItem[] items = getContributionItems(serviceLocator);
 		for (IContributionItem iContributionItem : items) {
 			submenu.add(iContributionItem);
@@ -62,11 +64,11 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 	}
 
 	public CommandContributionItem createOpenCommand(IServiceLocator serviceLocator, String label, String workspace) {
-		CommandContributionItemParameter p = new CommandContributionItemParameter(serviceLocator, "",
-				"no.resheim.eclipse.launcherutil.commands.newInstance", SWT.PUSH);
+		CommandContributionItemParameter p = new CommandContributionItemParameter(serviceLocator, "", //$NON-NLS-1$
+				COMMAND_ID, SWT.PUSH);
 		if (workspace != null) {
 			Map<Object, Object> parameters = new HashMap<Object, Object>();
-			parameters.put("no.resheim.eclipse.launcherutil.workspace", workspace);
+			parameters.put(OpenWorkspaceHandler.PARAMETER_ID, workspace);
 			p.parameters = parameters;
 		}
 		p.label = label;

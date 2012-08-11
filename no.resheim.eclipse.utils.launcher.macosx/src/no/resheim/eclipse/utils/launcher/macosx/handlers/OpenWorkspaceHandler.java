@@ -30,6 +30,8 @@ import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 @SuppressWarnings("restriction")
 public class OpenWorkspaceHandler extends AbstractHandler {
 
+	private static final String ECLIPSE_LAUNCHER = "eclipse.launcher"; //$NON-NLS-1$
+
 	private static final String PROP_VM = "eclipse.vm"; //$NON-NLS-1$
 
 	private static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
@@ -41,6 +43,8 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
 	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
+
+	static final String PARAMETER_ID = "no.resheim.eclipse.launcherutil.workspace"; //$NON-NLS-1$
 
 	public OpenWorkspaceHandler() {
 	}
@@ -62,11 +66,11 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 		String property = System.getProperty(PROP_VM);
 		// Use defaults;
 		if (property == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		StringBuffer result = new StringBuffer(512);
-		result.append(" --args ");
+		result.append(" --args "); //$NON-NLS-1$
 		result.append(property);
 		result.append(NEW_LINE);
 
@@ -112,18 +116,18 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		String launcher = System.getProperty("eclipse.launcher");
-		final String workspace = event.getParameter("no.resheim.eclipse.launcherutil.workspace");
+		String launcher = System.getProperty(ECLIPSE_LAUNCHER);
+		final String workspace = event.getParameter(PARAMETER_ID);
 		if (launcher != null) {
 			// We need to use the Eclipse.app folder so that the application
 			// is opened properly. Otherwise we'll also open a shell which is
 			// not desirable.
 			final File app = new File(launcher).getParentFile().getParentFile().getParentFile();
-			if (app.exists() && app.isDirectory() && app.getName().endsWith(".app")) {
+			if (app.exists() && app.isDirectory() && app.getName().endsWith(".app")) { //$NON-NLS-1$
 				BusyIndicator.showWhile(null, new Runnable() {
 					public void run() {
 						try {
-							Runtime.getRuntime().exec("open -n " + app.getAbsolutePath() + buildCommandLine(workspace));
+							Runtime.getRuntime().exec("open -n " + app.getAbsolutePath() + buildCommandLine(workspace)); //$NON-NLS-1$
 						} catch (IOException e) {
 							e.printStackTrace();
 						}

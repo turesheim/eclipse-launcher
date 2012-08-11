@@ -20,10 +20,10 @@
          point="org.eclipse.ui.commands">
       <command
             id="no.resheim.eclipse.launcherutil.commands.newInstance"
-            name="Open Workspace">
+            name="%command.name">
          <commandParameter
                id="no.resheim.eclipse.launcherutil.workspace"
-               name="workspace"
+               name="%commandParameter.name"
                optional="true">
          </commandParameter>
       </command>
