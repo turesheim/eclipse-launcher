@@ -17,10 +17,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TaskBar;
 import org.eclipse.swt.widgets.TaskItem;
 
+/**
+ * Obtains the {@link TaskItem} belonging to the running application and sets
+ * the badge to the workspace name.
+ * 
+ * @author Torkild U. Resheim
+ * 
+ */
 public class WorkspaceDecorator implements IWorkspaceDecorator {
 
 	public WorkspaceDecorator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	static TaskItem getTaskBarItem() {
