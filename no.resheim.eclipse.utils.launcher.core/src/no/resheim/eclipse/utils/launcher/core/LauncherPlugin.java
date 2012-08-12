@@ -10,6 +10,8 @@
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.core;
 
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -56,6 +58,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		store.addPropertyChangeListener(new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
+				System.out.println(event);
 				updateDecorator();
 			}
 		});
@@ -98,8 +101,13 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		SafeRunnable safeRunnable = new SafeRunnable() {
 			@Override
 			public void run() throws Exception {
+				// Obtain the workspace name from preferences
 				IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
 				String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
+				if (name == null || name.length() == 0) {
+					IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+					name = root.getLocation().toFile().getName();
+				}
 				if (name != null) {
 					IWorkspaceDecorator decorator = getDecorator();
 					if (decorator != null) {
