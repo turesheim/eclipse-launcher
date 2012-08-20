@@ -58,15 +58,20 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		store.addPropertyChangeListener(new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
-				System.out.println(event);
-				updateDecorator();
+				if (event.getProperty().equals(IDEInternalPreferences.WORKSPACE_NAME)) {
+					updateDecorator();
+				}
 			}
 		});
 		updateDecorator();
 	}
 
-	public IWorkspaceDecorator getDecorator() {
-
+	/**
+	 * Returns the workspace decorator if one is available.
+	 * 
+	 * @return the workspace decorator or <code>null</code>
+	 */
+	private IWorkspaceDecorator getDecorator() {
 		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
 		for (IConfigurationElement configurationElement : synchronizers) {
@@ -97,26 +102,31 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	public void updateDecorator() {
-		SafeRunnable safeRunnable = new SafeRunnable() {
-			@Override
-			public void run() throws Exception {
-				// Obtain the workspace name from preferences
-				IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
-				String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
-				if (name == null || name.length() == 0) {
-					IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-					name = root.getLocation().toFile().getName();
-				}
-				if (name != null) {
-					IWorkspaceDecorator decorator = getDecorator();
-					if (decorator != null) {
+	/**
+	 * Decorates the workspace icon with the workspace name if a mechanism for
+	 * doing so is available.
+	 * 
+	 * @see #getDecorator()
+	 */
+	private void updateDecorator() {
+		final IWorkspaceDecorator decorator = getDecorator();
+		if (decorator != null) {
+			SafeRunnable safeRunnable = new SafeRunnable() {
+				@Override
+				public void run() throws Exception {
+						// Obtain the workspace name from preferences
+						IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+						String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
+						// Use path segment if no preference is set
+						if (name == null || name.length() == 0) {
+							IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+							name = root.getLocation().toFile().getName();
+						}
 						decorator.decorateWorkspace(name);
 					}
-				}
-			}
-		};
-		SafeRunner.run(safeRunnable);
+			};
+			SafeRunner.run(safeRunnable);
+		}
 	}
 
 	/**

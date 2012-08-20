@@ -29,7 +29,7 @@ public class WorkspaceDecorator implements IWorkspaceDecorator {
 	public WorkspaceDecorator() {
 	}
 
-	static TaskItem getTaskBarItem() {
+	private static TaskItem getTaskBarItem() {
 		Display display = Display.getDefault();
 		Shell shell = display.getActiveShell();
 		TaskBar bar = display.getSystemTaskBar();
