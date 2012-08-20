@@ -1,6 +1,6 @@
 ##Changes
 
-###Version 1.1.0
+###Version 1.1.0 (2012-08-20)
 * Badge text is set to the last segment of the workspace path unless a name has been specified in preferences.
 
 ###Version 1.0.0 (2012-08-07)
