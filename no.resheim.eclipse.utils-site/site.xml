@@ -3,7 +3,7 @@
    <description>
       Eclipse Utilities
    </description>
-   <feature url="features/no.resheim.eclipse.utils.launcher_1.0.0.qualifier.jar" id="no.resheim.eclipse.utils.launcher" version="1.0.0.qualifier">
+   <feature url="features/no.resheim.eclipse.utils.launcher_1.1.0.qualifier.jar" id="no.resheim.eclipse.utils.launcher" version="1.0.0.qualifier">
       <category name="features"/>
    </feature>
    <category-def name="features" label="Eclipse Utilities">
