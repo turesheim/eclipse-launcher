@@ -11,14 +11,22 @@
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.macosx.handlers;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import no.resheim.eclipse.utils.launcher.core.LauncherPlugin;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * A command handler that will open up a new Eclipse instance using the same
@@ -48,7 +56,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 
 	public OpenWorkspaceHandler() {
 	}
-
+	
 	/**
 	 * Create and return a string with command line options for eclipse.exe that
 	 * will launch a new workbench that is the same as the currently running
@@ -88,7 +96,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 			result.append(workspace);
 			result.append(NEW_LINE);
 		} else if (workspace != null) {
-			// find the index of the arg to replace its value
+			// find the index of the argument to replace its value
 			int cmd_data_pos = property.lastIndexOf(CMD_DATA);
 			if (cmd_data_pos != -1) {
 				cmd_data_pos += CMD_DATA.length() + 1;
@@ -114,7 +122,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 
 		return result.toString();
 	}
-
+	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String launcher = System.getProperty(ECLIPSE_LAUNCHER);
 		final String workspace = event.getParameter(PARAMETER_ID);
@@ -126,10 +134,27 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 			if (app.exists() && app.isDirectory() && app.getName().endsWith(".app")) { //$NON-NLS-1$
 				BusyIndicator.showWhile(null, new Runnable() {
 					public void run() {
+						IStatus status = Status.OK_STATUS;
 						try {
-							Runtime.getRuntime().exec("open -n " + app.getAbsolutePath() + buildCommandLine(workspace)); //$NON-NLS-1$
-						} catch (IOException e) {
-							e.printStackTrace();
+							Process p = Runtime.getRuntime().exec(new String[]{"open","-n",app.getAbsolutePath(),buildCommandLine(workspace)});
+							if (p.waitFor()!=0){
+								BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+								StringBuilder sb = new StringBuilder();
+								String in = null;
+								while ((in=br.readLine())!=null){
+									sb.append("\n");
+									sb.append(in);
+								}
+								br.close();
+								if (sb.length()>0){
+									status = new Status(IStatus.ERROR,LauncherPlugin.PLUGIN_ID,"Could not execute OpenWorkspaceHandler."+sb.toString());
+								}					
+							}
+						} catch (Exception e) {
+							status = new Status(IStatus.ERROR,LauncherPlugin.PLUGIN_ID,"Could not execute OpenWorkspaceHandler",e);
+						}
+						if (!status.isOK()){
+							StatusManager.getManager().handle(status);
 						}
 					}
 				});

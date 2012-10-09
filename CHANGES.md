@@ -1,5 +1,9 @@
 ##Changes
 
+###Version 1.2.0 (2012-10-09)
+* Eclipse can be started even if the path to it includes whitespace characters.
+* Improved error logging when Eclipse could not be started.
+
 ###Version 1.1.0 (2012-08-20)
 * Badge text is set to the last segment of the workspace path unless a name has been specified in preferences.
 
