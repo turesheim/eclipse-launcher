@@ -80,7 +80,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 		// append the vmargs and commands. Assume that these already end in \n
 		String vmargs = System.getProperty(PROP_VMARGS);
 		if (vmargs != null) {
-			for (String string : vmargs.split(" ")) { //$NON-NLS-1$
+			for (String string : vmargs.split("\n")) { //$NON-NLS-1$
 				arguments.add(string);
 			}
 		}
@@ -109,7 +109,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 		// already contains the -vm arg)
 		if (vmargs != null) {
 			arguments.add(CMD_VMARGS);
-			for (String string : vmargs.split(" ")) { //$NON-NLS-1$
+			for (String string : vmargs.split("\n")) { //$NON-NLS-1$
 				arguments.add(string);
 			}
 		}
