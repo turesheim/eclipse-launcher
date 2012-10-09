@@ -14,8 +14,6 @@ package no.resheim.eclipse.utils.launcher.macosx.handlers;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import no.resheim.eclipse.utils.launcher.core.LauncherPlugin;
 
@@ -29,9 +27,8 @@ import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
- * A command handler that will open up a new Eclipse instance using the same
- * launcher used to opening the current instance. Virtual machine arguments used
- * to start the original instance will be passed along.
+ * A command handler that will open up a new Eclipse instance using the same launcher used to opening the current
+ * instance. Virtual machine arguments used to start the original instance will be passed along.
  * 
  * @author Torkild U. Resheim
  */
@@ -56,12 +53,10 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 
 	public OpenWorkspaceHandler() {
 	}
-	
+
 	/**
-	 * Create and return a string with command line options for eclipse.exe that
-	 * will launch a new workbench that is the same as the currently running
-	 * one, but using the argument directory as its workspace.
-	 * 
+	 * Create and return a string with command line options for eclipse.exe that will launch a new workbench that is the
+	 * same as the currently running one, but using the argument directory as its workspace.
 	 * <p>
 	 * Copied from {@link OpenWorkspaceAction}
 	 * </p>
@@ -88,14 +83,14 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 			result.append(vmargs);
 		}
 
-		// append the rest of the args, replacing or adding -data as required
+		// append the rest of the argsuments, replacing or adding -data as required
 		property = System.getProperty(PROP_COMMANDS);
 		if (property == null && workspace != null) {
 			result.append(CMD_DATA);
 			result.append(NEW_LINE);
 			result.append(workspace);
 			result.append(NEW_LINE);
-		} else if (workspace != null) {
+		} else if (workspace != null && property != null) {
 			// find the index of the argument to replace its value
 			int cmd_data_pos = property.lastIndexOf(CMD_DATA);
 			if (cmd_data_pos != -1) {
@@ -122,7 +117,7 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 
 		return result.toString();
 	}
-	
+
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String launcher = System.getProperty(ECLIPSE_LAUNCHER);
 		final String workspace = event.getParameter(PARAMETER_ID);
@@ -136,24 +131,27 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 					public void run() {
 						IStatus status = Status.OK_STATUS;
 						try {
-							Process p = Runtime.getRuntime().exec(new String[]{"open","-n",app.getAbsolutePath(),buildCommandLine(workspace)});
-							if (p.waitFor()!=0){
+							Process p = Runtime.getRuntime().exec(
+									new String[] { "open", "-n", app.getAbsolutePath(), buildCommandLine(workspace) }); //$NON-NLS-1$ //$NON-NLS-2$
+							if (p.waitFor() != 0) {
 								BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 								StringBuilder sb = new StringBuilder();
 								String in = null;
-								while ((in=br.readLine())!=null){
-									sb.append("\n");
+								while ((in = br.readLine()) != null) {
+									sb.append("\n"); //$NON-NLS-1$
 									sb.append(in);
 								}
 								br.close();
-								if (sb.length()>0){
-									status = new Status(IStatus.ERROR,LauncherPlugin.PLUGIN_ID,"Could not execute OpenWorkspaceHandler."+sb.toString());
-								}					
+								if (sb.length() > 0) {
+									status = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+											"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
+								}
 							}
 						} catch (Exception e) {
-							status = new Status(IStatus.ERROR,LauncherPlugin.PLUGIN_ID,"Could not execute OpenWorkspaceHandler",e);
+							status = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+									"Could not execute OpenWorkspaceHandler", e); //$NON-NLS-1$
 						}
-						if (!status.isOK()){
+						if (!status.isOK()) {
 							StatusManager.getManager().handle(status);
 						}
 					}
