@@ -29,7 +29,7 @@ import org.osgi.framework.BundleContext;
 @SuppressWarnings("restriction")
 public class LauncherPlugin extends AbstractUIPlugin {
 
-	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace";
+	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace"; //$NON-NLS-1$
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "no.resheim.eclipse.utils.launcher.core"; //$NON-NLS-1$
@@ -56,7 +56,6 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		plugin = this;
 		IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
 		store.addPropertyChangeListener(new IPropertyChangeListener() {
-			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				if (event.getProperty().equals(IDEInternalPreferences.WORKSPACE_NAME)) {
 					updateDecorator();
@@ -75,9 +74,9 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
 		for (IConfigurationElement configurationElement : synchronizers) {
-			if (configurationElement.getName().equals("decorator")) {
+			if (configurationElement.getName().equals("decorator")) { //$NON-NLS-1$
 				try {
-					Object object = configurationElement.createExecutableExtension("class");
+					Object object = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
 					if (object instanceof IWorkspaceDecorator) {
 						return ((IWorkspaceDecorator) object);
 					}
@@ -103,8 +102,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Decorates the workspace icon with the workspace name if a mechanism for
-	 * doing so is available.
+	 * Decorates the workspace icon with the workspace name if a mechanism for doing so is available.
 	 * 
 	 * @see #getDecorator()
 	 */
@@ -112,18 +110,17 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		final IWorkspaceDecorator decorator = getDecorator();
 		if (decorator != null) {
 			SafeRunnable safeRunnable = new SafeRunnable() {
-				@Override
 				public void run() throws Exception {
-						// Obtain the workspace name from preferences
-						IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
-						String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
-						// Use path segment if no preference is set
-						if (name == null || name.length() == 0) {
-							IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-							name = root.getLocation().toFile().getName();
-						}
-						decorator.decorateWorkspace(name);
+					// Obtain the workspace name from preferences
+					IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+					String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
+					// Use path segment if no preference is set
+					if (name == null || name.length() == 0) {
+						IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+						name = root.getLocation().toFile().getName();
 					}
+					decorator.decorateWorkspace(name);
+				}
 			};
 			SafeRunner.run(safeRunnable);
 		}

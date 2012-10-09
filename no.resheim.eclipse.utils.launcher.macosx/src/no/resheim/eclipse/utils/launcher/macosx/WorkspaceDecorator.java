@@ -18,11 +18,9 @@ import org.eclipse.swt.widgets.TaskBar;
 import org.eclipse.swt.widgets.TaskItem;
 
 /**
- * Obtains the {@link TaskItem} belonging to the running application and sets
- * the badge to the workspace name.
+ * Obtains the {@link TaskItem} belonging to the running application and sets the badge to the workspace name.
  * 
  * @author Torkild U. Resheim
- * 
  */
 public class WorkspaceDecorator implements IWorkspaceDecorator {
 
@@ -33,18 +31,18 @@ public class WorkspaceDecorator implements IWorkspaceDecorator {
 		Display display = Display.getDefault();
 		Shell shell = display.getActiveShell();
 		TaskBar bar = display.getSystemTaskBar();
-		if (bar == null)
+		if (bar == null) {
 			return null;
+		}
 		TaskItem item = bar.getItem(shell);
-		if (item == null)
+		if (item == null) {
 			item = bar.getItem(null);
+		}
 		return item;
 	}
-	@Override
+
 	public void decorateWorkspace(final String name) {
 		Display.getDefault().asyncExec(new Runnable() {
-
-			@Override
 			public void run() {
 				TaskItem item = getTaskBarItem();
 				item.setOverlayText(name);
