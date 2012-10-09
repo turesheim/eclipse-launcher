@@ -10,3 +10,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide;bundle-version="3.8.0"
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
+Export-Package: no.resheim.eclipse.utils.launcher.macosx,
+ no.resheim.eclipse.utils.launcher.macosx.handlers
