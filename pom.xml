@@ -6,7 +6,7 @@
 
 	<groupId>no.resheim.eclipse.utils</groupId>
 	<artifactId>no.resheim.eclipse.utils-parent</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<prerequisites>
@@ -20,11 +20,11 @@
 
 	<repositories>
 		<repository>
-      <id>eclipse-juno</id>
-      <layout>p2</layout>
-      <url>http://download.eclipse.org/releases/juno</url>
+			<id>eclipse-indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo</url>
 		</repository>
-  </repositories>
+	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -32,7 +32,7 @@
 			<url>https://repository.sonatype.org/content/repositories/snapshots/</url>
 		</pluginRepository>
 	</pluginRepositories>
-          
+
 	<licenses>
 		<license>
 			<name>Eclipse Public License v1.0</name>
@@ -102,14 +102,20 @@
 					</environments>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.7</version>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 	<modules>
 		<module>no.resheim.eclipse.utils.launcher-feature</module>
 		<module>no.resheim.eclipse.utils.launcher.core</module>
 		<module>no.resheim.eclipse.utils.launcher.macosx</module>
 		<module>no.resheim.eclipse.utils-site</module>
+		<module>no.resheim.eclipse.utils-target</module>
 	</modules>
 
 </project>
