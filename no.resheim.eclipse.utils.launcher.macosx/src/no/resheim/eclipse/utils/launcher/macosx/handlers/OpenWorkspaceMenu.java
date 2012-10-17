@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import no.resheim.eclipse.utils.launcher.core.LauncherPlugin;
+
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -26,6 +30,7 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.menus.ExtensionContributionFactory;
 import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 @SuppressWarnings("restriction")
 public class OpenWorkspaceMenu extends ExtensionContributionFactory {
@@ -37,19 +42,25 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 
 	private IContributionItem[] getContributionItems(IServiceLocator serviceLocator) {
 		ArrayList<IContributionItem> list = new ArrayList<IContributionItem>();
-		final ChooseWorkspaceData data = new ChooseWorkspaceData(Platform.getInstanceLocation().getURL());
-		data.readPersistedData();
-		String current = data.getInitialDefault();
-		String[] workspaces = data.getRecentWorkspaces();
-		for (int i = 0; i < workspaces.length; i++) {
-			if (workspaces[i] != null && !workspaces[i].equals(current)) {
-				list.add(createOpenCommand(serviceLocator, workspaces[i], workspaces[i]));
+		try {
+			final ChooseWorkspaceData data = new ChooseWorkspaceData(Platform.getInstanceLocation().getURL());
+			data.readPersistedData();
+			String current = data.getInitialDefault();
+			String[] workspaces = data.getRecentWorkspaces();
+			for (int i = 0; i < workspaces.length; i++) {
+				if (workspaces[i] != null && !workspaces[i].equals(current)) {
+					list.add(createOpenCommand(serviceLocator, workspaces[i], workspaces[i]));
+				}
 			}
+			if (list.size() > 0) {
+				list.add(new Separator());
+			}
+			list.add(createOpenCommand(serviceLocator, Messages.OpenWorkspaceMenu_Other, null));
+		} catch (Exception e) {
+			IStatus newStatus = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+					"Could not create workspace chooser menu item.", e); //$NON-NLS-1$
+			StatusManager.getManager().handle(newStatus);
 		}
-		if (list.size() > 0) {
-			list.add(new Separator());
-		}
-		list.add(createOpenCommand(serviceLocator, Messages.OpenWorkspaceMenu_Other, null));
 		return list.toArray(new IContributionItem[list.size()]);
 	}
 
