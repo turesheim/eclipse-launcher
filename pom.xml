@@ -4,34 +4,21 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
 	<groupId>no.resheim.eclipse.utils</groupId>
 	<artifactId>no.resheim.eclipse.utils-parent</artifactId>
 	<version>1.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
+	<name>Eclipse Utilities Parent</name>
 
-	<properties>
-		<tycho-version>0.15.0</tycho-version>
-		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>eclipse-indigo</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/indigo</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>sonatype-snapshots</id>
-			<url>https://repository.sonatype.org/content/repositories/snapshots/</url>
-		</pluginRepository>
-	</pluginRepositories>
+	<issueManagement>
+		<url>https://github.com/turesheim/eclipse-utilities/issues</url>
+		<system>GitHub</system>
+	</issueManagement>
 
 	<licenses>
 		<license>
@@ -49,15 +36,43 @@
 		</license>
 	</licenses>
 
+	<properties>
+		<tycho-version>0.15.0</tycho-version>
+		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
+		<eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
+		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+		<platform-version>[3.7,3.8)</platform-version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>eclipse-platform</id>
+			<layout>p2</layout>
+			<url>${eclipse-site}</url>
+		</repository>
+		<repository>
+			<id>swtbot</id>
+			<layout>p2</layout>
+			<url>${swtbot-site}</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-snapshots</id>
+			<url>https://repository.sonatype.org/content/repositories/snapshots/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven.eclipse.org</id>
+			<url>http://maven.eclipse.org/nexus/content/repositories/milestone-indigo/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+
 	<organization>
 		<name>Torkild U. Resheim</name>
 		<url>http://torkildr.blogspot.com/</url>
 	</organization>
-
-	<issueManagement>
-		<url>https://github.com/turesheim/eclipse-utilities/issues</url>
-		<system>GitHub</system>
-	</issueManagement>
 
 	<build>
 		<plugins>
@@ -113,6 +128,7 @@
 		<module>no.resheim.eclipse.utils.launcher-feature</module>
 		<module>no.resheim.eclipse.utils.launcher.core</module>
 		<module>no.resheim.eclipse.utils.launcher.macosx</module>
+		<module>no.resheim.eclipse.utils.launcher.tests</module>
 		<module>no.resheim.eclipse.utils-site</module>
 		<module>no.resheim.eclipse.utils-target</module>
 	</modules>

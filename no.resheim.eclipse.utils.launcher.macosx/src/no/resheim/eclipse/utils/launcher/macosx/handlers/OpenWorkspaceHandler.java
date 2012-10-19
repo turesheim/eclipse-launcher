@@ -24,7 +24,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
@@ -33,88 +32,19 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * 
  * @author Torkild U. Resheim
  */
-@SuppressWarnings("restriction")
 public class OpenWorkspaceHandler extends AbstractHandler {
 
 	private static final String ECLIPSE_LAUNCHER = "eclipse.launcher"; //$NON-NLS-1$
 
-	private static final String PROP_VM = "eclipse.vm"; //$NON-NLS-1$
-
 	private static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
 
 	private static final String PROP_COMMANDS = "eclipse.commands"; //$NON-NLS-1$
-
-	private static final String CMD_DATA = "-data"; //$NON-NLS-1$
-
-	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
 	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
 
 	static final String PARAMETER_ID = "no.resheim.eclipse.launcherutil.workspace"; //$NON-NLS-1$
 
 	public OpenWorkspaceHandler() {
-	}
-
-	/**
-	 * Create and return a string with command line options for eclipse.exe that will launch a new workbench that is the
-	 * same as the currently running one, but using the argument directory as its workspace.
-	 * <p>
-	 * Copied from {@link OpenWorkspaceAction}
-	 * </p>
-	 * 
-	 * @param workspace
-	 *            the directory to use as the new workspace
-	 * @return a string of command line options or null on error
-	 */
-	private ArrayList<String> buildCommandLine(String workspace) {
-		ArrayList<String> arguments = new ArrayList<String>();
-		String property = System.getProperty(PROP_VM);
-		// Use defaults;
-		if (property == null) {
-			return arguments;
-		}
-
-		arguments.add("--args"); //$NON-NLS-1$
-		arguments.add(property);
-
-		// append the vmargs and commands. Assume that these already end in \n
-		String vmargs = System.getProperty(PROP_VMARGS);
-		if (vmargs != null) {
-			for (String string : vmargs.split("\n")) { //$NON-NLS-1$
-				arguments.add(string);
-			}
-		}
-
-		// append the rest of the argsuments, replacing or adding -data as required
-		property = System.getProperty(PROP_COMMANDS);
-		if (property == null && workspace != null) {
-			arguments.add(CMD_DATA);
-			arguments.add(workspace);
-		} else if (workspace != null && property != null) {
-			// find the index of the argument to replace its value
-			int cmd_data_pos = property.lastIndexOf(CMD_DATA);
-			if (cmd_data_pos != -1) {
-				cmd_data_pos += CMD_DATA.length() + 1;
-				arguments.add(property.substring(0, cmd_data_pos));
-				arguments.add(workspace);
-				arguments.add(property.substring(property.indexOf('\n', cmd_data_pos)));
-			} else {
-				arguments.add(CMD_DATA);
-				arguments.add(workspace);
-				arguments.add(property);
-			}
-		}
-
-		// put the vmargs back at the very end (the eclipse.commands property
-		// already contains the -vm arg)
-		if (vmargs != null) {
-			arguments.add(CMD_VMARGS);
-			for (String string : vmargs.split("\n")) { //$NON-NLS-1$
-				arguments.add(string);
-			}
-		}
-
-		return arguments;
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -130,7 +60,11 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 					public void run() {
 						IStatus status = Status.OK_STATUS;
 						try {
-							ArrayList<String> args = buildCommandLine(workspace);
+							String cmd = System.getProperty(PROP_COMMANDS);
+							String vm = System.getProperty(PROP_VMARGS);
+							ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd, vm);
+							// for OS X
+							args.add(0, "--args"); //$NON-NLS-1$
 							args.add(0, app.getAbsolutePath());
 							args.add(0, "-n"); //$NON-NLS-1$
 							args.add(0, "open"); //$NON-NLS-1$

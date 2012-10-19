@@ -10,6 +10,8 @@
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.core;
 
+import java.util.ArrayList;
+
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -23,6 +25,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.ui.internal.ide.IDEInternalPreferences;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
+import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -70,7 +73,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return the workspace decorator or <code>null</code>
 	 */
-	private IWorkspaceDecorator getDecorator() {
+	protected IWorkspaceDecorator getDecorator() {
 		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
 		for (IConfigurationElement configurationElement : synchronizers) {
@@ -124,6 +127,59 @@ public class LauncherPlugin extends AbstractUIPlugin {
 			};
 			SafeRunner.run(safeRunnable);
 		}
+	}
+
+	private static final String CMD_DATA = "-data"; //$NON-NLS-1$
+
+	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
+
+	/**
+	 * Create and return a string with command line options for eclipse.exe that will launch a new workbench that is the
+	 * same as the currently running one, but using the argument directory as its workspace.
+	 * <p>
+	 * Copied from {@link OpenWorkspaceAction}
+	 * </p>
+	 * 
+	 * @param workspace
+	 *            the directory to use as the new workspace
+	 * @param commands
+	 *            the system property "eclipse.commands"
+	 * @param vmargs
+	 *            the system property "eclipse.vmargs"
+	 * @return a string of command line options or null on error
+	 */
+	public ArrayList<String> buildCommandLine(String workspace, String commands, String vmargs) {
+		ArrayList<String> arguments = new ArrayList<String>();
+		String[] argStrings = commands.split("\\n"); //$NON-NLS-1$
+		boolean hasData = false;
+		for (int i = 0; i < argStrings.length; i++) {
+			String string = argStrings[i];
+			arguments.add(string);
+			if (string.equals(CMD_DATA)) {
+				if (workspace != null) {
+					// Replace the workspace argument
+					argStrings[i + 1] = workspace;
+					hasData = true;
+				} else {
+					// Remove the -data argument
+					arguments.remove(string);
+				}
+			}
+		}
+		if (!hasData && workspace != null) {
+			arguments.add(CMD_DATA);
+			arguments.add(workspace);
+		}
+
+		// Put the vmargs back at the very end (the eclipse.commands property
+		// already contains the -vm arg)
+		if (vmargs != null) {
+			arguments.add(CMD_VMARGS);
+			for (String string : vmargs.split("\n")) { //$NON-NLS-1$
+				arguments.add(string);
+			}
+		}
+		return arguments;
 	}
 
 	/**
