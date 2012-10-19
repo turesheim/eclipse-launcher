@@ -1,5 +1,10 @@
 ##Changes
 
+###Version 1.2.1 (2012-10-19)
+* Removed dependency on Java 1.7 - the utility will now also work if Java 1.6 is used.
+* Removed dependency on Eclipse Juno (4.2) - Indigo (3.7) can now also be used.
+* Fixed a bug that would sometimes cause the workspace selection dialog to pop up even if a workspace had been selected in the menu.
+
 ###Version 1.2.0 (2012-10-09)
 * Eclipse can be started even if the path to it includes whitespace characters.
 * Improved error logging when Eclipse could not be started.
