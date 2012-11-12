@@ -38,6 +38,8 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 
 	private static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
 
+	private static final String PROP_VM = "eclipse.vm"; //$NON-NLS-1$
+
 	private static final String PROP_COMMANDS = "eclipse.commands"; //$NON-NLS-1$
 
 	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
@@ -61,8 +63,10 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 						IStatus status = Status.OK_STATUS;
 						try {
 							String cmd = System.getProperty(PROP_COMMANDS);
-							String vm = System.getProperty(PROP_VMARGS);
-							ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd, vm);
+							String vmargs = System.getProperty(PROP_VMARGS);
+							String vm = System.getProperty(PROP_VM);
+							ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd,
+									vmargs, vm);
 							// for OS X
 							args.add(0, "--args"); //$NON-NLS-1$
 							args.add(0, app.getAbsolutePath());

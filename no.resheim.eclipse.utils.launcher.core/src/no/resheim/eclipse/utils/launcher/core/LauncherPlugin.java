@@ -131,6 +131,8 @@ public class LauncherPlugin extends AbstractUIPlugin {
 
 	private static final String CMD_DATA = "-data"; //$NON-NLS-1$
 
+	private static final String CMD_VM = "-vm"; //$NON-NLS-1$
+
 	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
 	/**
@@ -148,31 +150,45 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 *            the system property "eclipse.vmargs"
 	 * @return a string of command line options or null on error
 	 */
-	public ArrayList<String> buildCommandLine(String workspace, String commands, String vmargs) {
+	public ArrayList<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
 		ArrayList<String> arguments = new ArrayList<String>();
+		// Handle the command string
 		String[] argStrings = commands.split("\\n"); //$NON-NLS-1$
 		boolean hasData = false;
+		boolean hasVm = false;
 		for (int i = 0; i < argStrings.length; i++) {
 			String string = argStrings[i];
 			arguments.add(string);
 			if (string.equals(CMD_DATA)) {
 				if (workspace != null) {
-					// Replace the workspace argument
+					// Replace the workspace argument if a workspace has been selected
 					argStrings[i + 1] = workspace;
 					hasData = true;
 				} else {
-					// Remove the -data argument
+					// Remove the workspace (it must be selected)
 					arguments.remove(string);
+					i++;
+				}
+			}
+			if (string.equals(CMD_VM)) {
+				if (vm != null) {
+					// Replace the workspace argument
+					argStrings[i + 1] = vm;
+					hasVm = true;
 				}
 			}
 		}
+		// Add the -data option if specified
 		if (!hasData && workspace != null) {
 			arguments.add(CMD_DATA);
 			arguments.add(workspace);
 		}
-
-		// Put the vmargs back at the very end (the eclipse.commands property
-		// already contains the -vm arg)
+		// Add the -vm option if specified
+		if (!hasVm && vm != null) {
+			arguments.add(CMD_VM);
+			arguments.add(vm);
+		}
+		// Put the -vmargs option back at the very end
 		if (vmargs != null) {
 			arguments.add(CMD_VMARGS);
 			for (String string : vmargs.split("\n")) { //$NON-NLS-1$

@@ -37,7 +37,7 @@
 	</licenses>
 
 	<properties>
-		<tycho-version>0.15.0</tycho-version>
+		<tycho-version>0.16.0</tycho-version>
 		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
 		<eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
@@ -128,7 +128,6 @@
 		<module>no.resheim.eclipse.utils.launcher-feature</module>
 		<module>no.resheim.eclipse.utils.launcher.core</module>
 		<module>no.resheim.eclipse.utils.launcher.macosx</module>
-		<module>no.resheim.eclipse.utils.launcher.tests</module>
 		<module>no.resheim.eclipse.utils-site</module>
 		<module>no.resheim.eclipse.utils-target</module>
 	</modules>
