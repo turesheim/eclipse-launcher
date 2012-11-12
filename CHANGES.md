@@ -1,5 +1,8 @@
 ##Changes
 
+###Version 1.2.2 (2012-11-12)
+* Fixed a bug which would cause the default JVM to always be used. A new Eclipse instance will now always use the same JVM as the original instance.
+
 ###Version 1.2.1 (2012-10-19)
 * Removed dependency on Java 1.7 - the utility will now also work if Java 1.6 is used.
 * Removed dependency on Eclipse Juno (4.2) - Indigo (3.7) can now also be used.
