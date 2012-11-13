@@ -32,6 +32,8 @@ import org.osgi.framework.BundleContext;
 @SuppressWarnings("restriction")
 public class LauncherPlugin extends AbstractUIPlugin {
 
+	private static final String APPLE_JAVA = "/System/Library/Frameworks/JavaVM.framework"; //$NON-NLS-1$
+
 	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace"; //$NON-NLS-1$
 
 	// The plug-in ID
@@ -182,9 +184,9 @@ public class LauncherPlugin extends AbstractUIPlugin {
 				}
 			}
 		}
-		// Add the "-vm" argument. It must be first.
+		// Add the "-vm" argument unless default is used
 		if (vm != null) {
-			if (!vm.endsWith("/java")) { //$NON-NLS-1$
+			if (!vm.endsWith("/java") && !vm.startsWith(APPLE_JAVA)) { //$NON-NLS-1$
 				vm = vm + "/Contents/Home/bin/java"; //$NON-NLS-1$
 			}
 			arguments.add(0, vm);
