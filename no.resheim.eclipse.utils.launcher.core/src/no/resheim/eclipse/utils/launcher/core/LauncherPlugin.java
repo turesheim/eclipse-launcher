@@ -155,38 +155,45 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		// Handle the command string
 		String[] argStrings = commands.split("\\n"); //$NON-NLS-1$
 		boolean hasData = false;
-		boolean hasVm = false;
 		for (int i = 0; i < argStrings.length; i++) {
 			String string = argStrings[i];
 			arguments.add(string);
 			if (string.equals(CMD_DATA)) {
-				if (workspace != null) {
+				if (workspace == null) {
+					// Remove the workspace (it must be selected)
+					arguments.remove(string);
+					i++;
+				} else {
 					// Replace the workspace argument if a workspace has been selected
 					argStrings[i + 1] = workspace;
 					hasData = true;
+				}
+			}
+			if (string.equals(CMD_VM)) {
+				if (vm == null) {
+					// Re-use the "-vm" argument
+					arguments.remove(string);
+					vm = argStrings[i + 1];
+					i++;
 				} else {
-					// Remove the workspace (it must be selected)
+					// Ignore the "-vm" argument
 					arguments.remove(string);
 					i++;
 				}
 			}
-			if (string.equals(CMD_VM)) {
-				if (vm != null) {
-					// Replace the workspace argument
-					argStrings[i + 1] = vm;
-					hasVm = true;
-				}
+		}
+		// Add the "-vm" argument. It must be first.
+		if (vm != null) {
+			if (!vm.endsWith("/java")) { //$NON-NLS-1$
+				vm = vm + "/Contents/Home/bin/java"; //$NON-NLS-1$
 			}
+			arguments.add(0, vm);
+			arguments.add(0, CMD_VM);
 		}
 		// Add the -data option if specified
 		if (!hasData && workspace != null) {
 			arguments.add(CMD_DATA);
 			arguments.add(workspace);
-		}
-		// Add the -vm option if specified
-		if (!hasVm && vm != null) {
-			arguments.add(CMD_VM);
-			arguments.add(vm);
 		}
 		// Put the -vmargs option back at the very end
 		if (vmargs != null) {

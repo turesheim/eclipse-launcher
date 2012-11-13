@@ -72,10 +72,18 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 							args.add(0, app.getAbsolutePath());
 							args.add(0, "-n"); //$NON-NLS-1$
 							args.add(0, "open"); //$NON-NLS-1$
+							StringBuilder sb = new StringBuilder();
+							for (String string : args) {
+								sb.append(string);
+								sb.append(' ');
+							}
+							StatusManager.getManager()
+									.handle(new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
+											"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
 							Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
 							if (p.waitFor() != 0) {
 								BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-								StringBuilder sb = new StringBuilder();
+								sb.setLength(0);
 								String in = null;
 								while ((in = br.readLine()) != null) {
 									sb.append(NEW_LINE);
