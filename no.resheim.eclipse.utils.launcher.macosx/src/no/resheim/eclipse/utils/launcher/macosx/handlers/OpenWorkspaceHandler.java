@@ -13,6 +13,7 @@ package no.resheim.eclipse.utils.launcher.macosx.handlers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -56,45 +57,13 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 			// We need to use the Eclipse.app folder so that the application
 			// is opened properly. Otherwise we'll also open a shell which is
 			// not desirable.
-			final File app = new File(launcher).getParentFile().getParentFile().getParentFile();
-			if (app.exists() && app.isDirectory() && app.getName().endsWith(".app")) { //$NON-NLS-1$
+			final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
+			if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
 				BusyIndicator.showWhile(null, new Runnable() {
 					public void run() {
 						IStatus status = Status.OK_STATUS;
 						try {
-							String cmd = System.getProperty(PROP_COMMANDS);
-							String vmargs = System.getProperty(PROP_VMARGS);
-							String vm = System.getProperty(PROP_VM);
-							ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd,
-									vmargs, vm);
-							// for OS X
-							args.add(0, "--args"); //$NON-NLS-1$
-							args.add(0, app.getAbsolutePath());
-							args.add(0, "-n"); //$NON-NLS-1$
-							args.add(0, "open"); //$NON-NLS-1$
-							StringBuilder sb = new StringBuilder();
-							for (String string : args) {
-								sb.append(string);
-								sb.append(' ');
-							}
-							StatusManager.getManager()
-									.handle(new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
-											"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
-							Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
-							if (p.waitFor() != 0) {
-								BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-								sb.setLength(0);
-								String in = null;
-								while ((in = br.readLine()) != null) {
-									sb.append(NEW_LINE);
-									sb.append(in);
-								}
-								br.close();
-								if (sb.length() > 0) {
-									status = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
-											"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
-								}
-							}
+							status = doLaunch(workspace, application, status);
 						} catch (Exception e) {
 							status = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
 									"Could not execute OpenWorkspaceHandler", e); //$NON-NLS-1$
@@ -102,6 +71,44 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 						if (!status.isOK()) {
 							StatusManager.getManager().handle(status);
 						}
+					}
+
+					private IStatus doLaunch(final String workspace, final File app, IStatus status)
+							throws IOException, InterruptedException {
+						String cmd = System.getProperty(PROP_COMMANDS);
+						String vmargs = System.getProperty(PROP_VMARGS);
+						String vm = System.getProperty(PROP_VM);
+						ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd,
+								vmargs, vm);
+						// for OS X
+						args.add(0, "--args"); //$NON-NLS-1$
+						args.add(0, app.getAbsolutePath());
+						args.add(0, "-n"); //$NON-NLS-1$
+						args.add(0, "open"); //$NON-NLS-1$
+						StringBuilder sb = new StringBuilder();
+						for (String string : args) {
+							sb.append(string);
+							sb.append(' ');
+						}
+						StatusManager.getManager()
+								.handle(new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
+										"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
+						Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
+						if (p.waitFor() != 0) {
+							BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+							sb.setLength(0);
+							String in = null;
+							while ((in = br.readLine()) != null) {
+								sb.append(NEW_LINE);
+								sb.append(in);
+							}
+							br.close();
+							if (sb.length() > 0) {
+								status = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+										"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
+							}
+						}
+						return status;
 					}
 				});
 			}
