@@ -10,7 +10,7 @@
 
 	<groupId>no.resheim.eclipse.utils</groupId>
 	<artifactId>no.resheim.eclipse.utils-parent</artifactId>
-	<version>1.2.2-SNAPSHOT</version>
+	<version>1.2.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Eclipse Utilities Parent</name>

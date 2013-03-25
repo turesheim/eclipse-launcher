@@ -1,5 +1,8 @@
 ##Changes
 
+###Version 1.2.3 (2013-03-24)
+* Fixed a bug which would cause the JVM path to be wrong on Eclipse 4.3. Eclipse 4.2 and older would use <code>JAVA_HOME</code> or equivalent while Eclipse 4.3 will need the absolute path to the Java executable.
+
 ###Version 1.2.2 (2012-11-13)
 * Fixed a bug which would cause the default JVM (<code>/System/Library/Frameworks/JavaVM.framework</code>) to always be used when a new instance was started. This mechanism is a relic from the days Apple were maintaining their own builds of Java; and could lead to a undesired version being picked up. See ["Juggeling multiple Java versions on OS X"](http://java.dzone.com/articles/juggling-multiple-versions) for a bit more information. When opening a new Eclipse instance this utility will now attempt to use the same JVM as the original.
 
