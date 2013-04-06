@@ -3,8 +3,10 @@
    <description>
       Eclipse Utilities
    </description>
-   <feature url="features/no.resheim.eclipse.utils.launcher_1.2.3.qualifier.jar" id="no.resheim.eclipse.utils.launcher"
-   version="1.2.3.qualifier">
+   <feature url="features/no.resheim.eclipse.utils.launcher_1.2.3.qualifier.jar" id="no.resheim.eclipse.utils.launcher" version="1.2.3.qualifier">
+      <category name="features"/>
+   </feature>
+   <feature url="features/no.resheim.eclipse.utils.quicklook_1.0.0.qualifier.jar" id="no.resheim.eclipse.utils.quicklook" version="1.0.0.qualifier">
       <category name="features"/>
    </feature>
    <category-def name="features" label="Eclipse Utilities">

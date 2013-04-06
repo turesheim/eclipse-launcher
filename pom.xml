@@ -10,7 +10,7 @@
 
 	<groupId>no.resheim.eclipse.utils</groupId>
 	<artifactId>no.resheim.eclipse.utils-parent</artifactId>
-	<version>1.2.3-SNAPSHOT</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Eclipse Utilities Parent</name>
@@ -128,6 +128,8 @@
 		<module>no.resheim.eclipse.utils.launcher-feature</module>
 		<module>no.resheim.eclipse.utils.launcher.core</module>
 		<module>no.resheim.eclipse.utils.launcher.macosx</module>
+		<module>no.resheim.eclipse.utils.quicklook-feature</module>
+		<module>no.resheim.eclipse.utils.quicklook.macosx</module>
 		<module>no.resheim.eclipse.utils-site</module>
 		<module>no.resheim.eclipse.utils-target</module>
 	</modules>

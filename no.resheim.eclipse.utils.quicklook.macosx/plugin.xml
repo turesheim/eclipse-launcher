@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            description="Activates the OS X Quick Look feature on the selected file."
+            id="no.resheim.eclipse.quicklook.macosx.commands.sampleCommand"
+            name="%command.name">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="no.resheim.eclipse.quicklook.macosx.handlers.QuickLookHandler"
+            commandId="no.resheim.eclipse.quicklook.macosx.commands.sampleCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="no.resheim.eclipse.quicklook.macosx.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+Y">
+      </key>
+   </extension>
+
+</plugin>

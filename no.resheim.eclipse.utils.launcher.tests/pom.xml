@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>no.resheim.eclipse.utils-parent</artifactId>
 		<groupId>no.resheim.eclipse.utils</groupId>
-		<version>1.2.2-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>no.resheim.eclipse.utils.launcher.tests</artifactId>

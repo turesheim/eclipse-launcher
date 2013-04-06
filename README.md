@@ -1,5 +1,10 @@
-##OS X Eclipse Launcher##
+##OS X Quick Look for Eclipse
 
+This feature adds a **Quick Look** command that will activate [OS X Quick Look](http://www.apple.com/findouthow/mac/#quicklook) on  selected files and folders when **Command+Y** is pressed. Note that the title of the window will state _[DEBUG]_. This is due to the fact that there is no way of starting Quick Look from outside of Finder unless in debug mode.
+
+<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/quick-look.jpg" width="627 px"/>
+
+##OS X Eclipse Launcher##
 
 This feature will add an **Open Workspace** menu item that will detect the application of the running Eclipse instance and start another in a fashion similar to the **Switch Workspace** command.
 
