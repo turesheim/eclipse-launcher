@@ -37,7 +37,8 @@
 	</licenses>
 
 	<properties>
-		<tycho-version>0.16.0</tycho-version>
+		<tycho-version>0.17.0</tycho-version>
+		<tycho-extras-version>0.17.0</tycho-extras-version>
 		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
 		<eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
@@ -120,6 +121,27 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.7</version>
+			</plugin>
+			<!-- computes git revision for manifest -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+					<sourceReferences>
+						<generate>true</generate>
+					</sourceReferences>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-sourceref-jgit</artifactId>
+						<version>${tycho-extras-version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
