@@ -10,7 +10,7 @@
 
 	<groupId>no.resheim.eclipse.utils</groupId>
 	<artifactId>no.resheim.eclipse.utils-parent</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Eclipse Utilities Parent</name>
@@ -37,12 +37,12 @@
 	</licenses>
 
 	<properties>
-		<tycho-version>0.17.0</tycho-version>
-		<tycho-extras-version>0.17.0</tycho-extras-version>
+		<tycho.version>0.19.0</tycho.version>
+		<tycho-extras-version>0.19.0</tycho-extras-version>
 		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
-		<eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
+		<eclipse-site>http://download.eclipse.org/releases/kepler</eclipse-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
-		<platform-version>[3.7,3.8)</platform-version>
+<!--  <platform-version>[3.7,3.8)</platform-version> -->
 	</properties>
 
 	<repositories>
@@ -72,7 +72,7 @@
 
 	<organization>
 		<name>Torkild U. Resheim</name>
-		<url>http://torkildr.blogspot.com/</url>
+		<url>http://torkild.resheim.no/</url>
 	</organization>
 
 	<build>
@@ -80,13 +80,13 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<configuration>
 					<environments>
 						<environment>
@@ -126,14 +126,11 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-packaging-plugin</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<configuration>
 					<archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
 					</archive>
-					<sourceReferences>
-						<generate>true</generate>
-					</sourceReferences>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -147,13 +144,14 @@
 	</build>
 
 	<modules>
-		<module>no.resheim.eclipse.utils.launcher-feature</module>
-		<module>no.resheim.eclipse.utils.launcher.core</module>
-		<module>no.resheim.eclipse.utils.launcher.macosx</module>
-		<module>no.resheim.eclipse.utils.quicklook-feature</module>
-		<module>no.resheim.eclipse.utils.quicklook.macosx</module>
-		<module>no.resheim.eclipse.utils-site</module>
-		<module>no.resheim.eclipse.utils-target</module>
+		<module>../no.resheim.eclipse.utils-target</module>
+		<module>../no.resheim.eclipse.utils.launcher-feature</module>
+		<module>../no.resheim.eclipse.utils.launcher.core</module>
+		<module>../no.resheim.eclipse.utils.launcher.macosx</module>
+		<module>../no.resheim.eclipse.utils.quicklook-feature</module>
+		<module>../no.resheim.eclipse.utils.quicklook.macosx</module>
+		<module>../no.resheim.eclipse.utils-site</module>
+		<module>../no.resheim.eclipse.utils.launcher.tests</module>
 	</modules>
 
 </project>

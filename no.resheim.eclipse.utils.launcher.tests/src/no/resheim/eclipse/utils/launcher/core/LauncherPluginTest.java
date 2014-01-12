@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 Torkild U. Resheim and others
- * 
+ * Copyright (c) 2012-2014 Torkild U. Resheim
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.core;
@@ -56,7 +56,7 @@ public class LauncherPluginTest extends LauncherPlugin {
 
 	/**
 	 * The -data argument should be stripped from the eclipse.commands segment.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -84,13 +84,13 @@ public class LauncherPluginTest extends LauncherPlugin {
 				null, eclipse_commands, null, eclipse_vm);
 		Assert.assertEquals(3, args.size());
 		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals(eclipse_vm_full, args.get(1));
+		Assert.assertEquals(eclipse_vm, args.get(1));
 		Assert.assertEquals(eclipse_commands, args.get(2));
 	}
 
 	/**
 	 * The -vm argument should be stripped from the eclipse.commands segment.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -99,13 +99,13 @@ public class LauncherPluginTest extends LauncherPlugin {
 				null, eclipse_commands_vm, null, eclipse_vm);
 		Assert.assertEquals(3, args.size());
 		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals(eclipse_vm_full, args.get(1));
+		Assert.assertEquals(eclipse_vm, args.get(1));
 		Assert.assertEquals(eclipse_commands, args.get(2));
 	}
 
 	/**
 	 * The "-vm" option was specified in arguments and must be replaced.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -114,7 +114,7 @@ public class LauncherPluginTest extends LauncherPlugin {
 				null, eclipse_commands_vm, null, null);
 		Assert.assertEquals(3, args.size());
 		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals("myvm/Contents/Home/bin/java", args.get(1));
+		Assert.assertEquals("myvm", args.get(1));
 		Assert.assertEquals(eclipse_commands, args.get(2));
 	}
 

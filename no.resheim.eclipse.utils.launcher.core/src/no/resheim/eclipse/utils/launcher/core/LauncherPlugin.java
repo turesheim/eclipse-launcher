@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2012, 2013 Torkild U. Resheim.
- * 
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *    Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.core;
@@ -110,7 +110,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		if (vm != null) {
 			File vmFile = new File(vm);
 			// Handle that Eclipse pre 4.3 does not add full path to a Java
-			// executable and fix this by pointing to the expected location
+			// executable and fix this by pointing to the expected location.
 			// https://github.com/turesheim/eclipse-utilities/issues/5245
 			if (vmFile.isDirectory() && !vm.startsWith(APPLE_JAVA)) {
 				vm = vm + "/Contents/Home/bin/java"; //$NON-NLS-1$

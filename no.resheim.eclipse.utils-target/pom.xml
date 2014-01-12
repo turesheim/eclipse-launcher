@@ -6,13 +6,14 @@
 
 	<artifactId>no.resheim.elibrarium-target</artifactId>
 	<packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
 	<name>Eclipse Utilities Target Definition</name>
 
 	<parent>
+	    <relativePath>../no.resheim.eclipse.utils-parent/pom.xml</relativePath>
 		<artifactId>no.resheim.eclipse.utils-parent</artifactId>
 		<groupId>no.resheim.eclipse.utils</groupId>
-	    <version>1.3.0-SNAPSHOT</version>
+	    <version>1.4.0-SNAPSHOT</version>
 	</parent>
 
 	<build>
