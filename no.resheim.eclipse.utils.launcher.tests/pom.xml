@@ -72,7 +72,7 @@
 						<include>**/*Test.java</include>
 					</includes>
 					<argLine>${ui.test.vmargs}</argLine>
-					<useUIHarness>true</useUIHarness>
+					<useUIHarness>false</useUIHarness>
 					<useUIThread>false</useUIThread>
 					<product>org.eclipse.sdk.ide</product>
 					<application>org.eclipse.ui.ide.workbench</application>
