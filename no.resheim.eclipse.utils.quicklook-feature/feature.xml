@@ -3,7 +3,10 @@
       id="no.resheim.eclipse.utils.quicklook"
       label="OS X Quick Look for Eclipse"
       version="1.0.0.qualifier"
-      provider-name="Torkild U. Resheim">
+      provider-name="Torkild U. Resheim"
+      os="macosx"
+      ws="cocoa"
+      arch="x86_64">
 
    <description>
       A simple feature for OS X that enables activation of Quick Look on selected files.
