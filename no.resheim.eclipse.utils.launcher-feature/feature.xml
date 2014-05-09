@@ -2,8 +2,11 @@
 <feature
       id="no.resheim.eclipse.utils.launcher"
       label="%featureName"
-      version="1.2.3.qualifier"
-      provider-name="%providerName">
+      version="1.2.4.qualifier"
+      provider-name="%providerName"
+      os="macosx"
+      ws="cocoa"
+      arch="x86_64">
 
    <description>
       %description

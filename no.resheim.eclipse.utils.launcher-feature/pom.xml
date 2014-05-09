@@ -10,5 +10,5 @@
   </parent>
   <artifactId>no.resheim.eclipse.utils.launcher</artifactId>
   <packaging>eclipse-feature</packaging>
-  <version>1.2.3-SNAPSHOT</version>
+  <version>1.2.4-SNAPSHOT</version>
 </project>
