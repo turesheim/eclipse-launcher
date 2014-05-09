@@ -1,7 +1,7 @@
 ##Changes
 
 ###Version 1.4.0 (xxxx-xx-xx)
-* Housekeeping: Set up Mylyn configuration for each project. Fixed broken test running. Added Eclipse-SourceReferences in Manifest Headers. Set OS-filter in features.xml.
+* Housekeeping: Set up Mylyn configuration for each project. Fixed broken test running. Added Eclipse-SourceReferences in Manifest Headers. Set OS-filter in features.xml. Added license text.
 
 ###Version 1.3.0 (2013-04-06)
 * Added a new command that activates the [OS X Quick Look](http://www.apple.com/findouthow/mac/#quicklook) feature on a selected file when **Command+Y** is pressed. This is installed as a separate Eclipse feature.
