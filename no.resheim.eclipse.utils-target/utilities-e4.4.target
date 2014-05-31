@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde?>
+<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<target name="Eclipse Utilities for Luna (4.4)" sequenceNumber="1401560879">
+  <locations>
+    <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.sdk.feature.group" version="4.4.0.v20140522-1618"/>
+      <repository location="http://download.eclipse.org/releases/luna/"/>
+    </location>
+  </locations>
+</target>

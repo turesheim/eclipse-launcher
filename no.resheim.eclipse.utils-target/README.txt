@@ -1,5 +1,5 @@
 Note that the target platform specification is not used when building. Which
-to use is specified in the maste POM.
+to use is specified in the master POM.
 
 Eclipse releases names
 ----------------------
