@@ -44,15 +44,18 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	/** The shared instance */
 	private static LauncherPlugin plugin;
 
+	/** Argument key for specifying the workspace root folder */
 	private static final String CMD_DATA = "-data"; //$NON-NLS-1$
 
+	/** Argument key for specifying the JVM to use */
 	private static final String CMD_VM = "-vm"; //$NON-NLS-1$
 
+	/** Argument key for specifying JVM arguments */
 	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
 	/**
-	 * Returns the shared instance
-	 * 
+	 * Returns the shared instance.
+	 *
 	 * @return the shared instance
 	 */
 	public static LauncherPlugin getDefault() {
@@ -65,13 +68,15 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * <p>
 	 * Copied from {@link OpenWorkspaceAction}
 	 * </p>
-	 * 
+	 *
 	 * @param workspace
-	 *            the directory to use as the new workspace
+	 *            the directory to use as the new workspace or null
 	 * @param commands
 	 *            the system property "eclipse.commands"
 	 * @param vmargs
 	 *            the system property "eclipse.vmargs"
+	 * @param vm
+	 *            path to the Java virtual machine or null
 	 * @return a string of command line options or null on error
 	 */
 	public ArrayList<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
@@ -135,7 +140,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the workspace decorator if one is available.
-	 * 
+	 *
 	 * @return the workspace decorator or <code>null</code>
 	 */
 	protected IWorkspaceDecorator getDecorator() {
@@ -179,7 +184,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Decorates the workspace icon with the workspace name if a mechanism for doing so is available.
-	 * 
+	 *
 	 * @see #getDecorator()
 	 */
 	private void updateDecorator() {

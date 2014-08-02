@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2012 Torkild U. Resheim and others
- * 
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.macosx.handlers;
@@ -29,8 +29,9 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * A command handler that will open up a new Eclipse instance using the same launcher used to opening the current
- * instance. Virtual machine arguments used to start the original instance will be passed along.
- * 
+ * instance. Virtual machine arguments used to start the original instance will be passed along. This code is specific
+ * to OS X.
+ *
  * @author Torkild U. Resheim
  */
 public class OpenWorkspaceHandler extends AbstractHandler {
@@ -78,8 +79,8 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 						String cmd = System.getProperty(PROP_COMMANDS);
 						String vmargs = System.getProperty(PROP_VMARGS);
 						String vm = System.getProperty(PROP_VM);
-						ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd,
-								vmargs, vm);
+						ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(workspace, cmd, vmargs,
+								vm);
 						// for OS X
 						args.add(0, "--args"); //$NON-NLS-1$
 						args.add(0, app.getAbsolutePath());
@@ -91,8 +92,8 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 							sb.append(' ');
 						}
 						StatusManager.getManager()
-								.handle(new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
-										"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
+						.handle(new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
+								"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
 						Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
 						if (p.waitFor() != 0) {
 							BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
