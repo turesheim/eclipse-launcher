@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="Eclipse Utilities for Luna (4.4)" sequenceNumber="1407270813">
+<target name="Eclipse Utilities for Luna (4.4)" sequenceNumber="1410719109">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.sdk.feature.group" version="4.4.0.v20140606-1558"/>
+      <unit id="org.eclipse.sdk.ide" version="4.4.0.I20140606-1215"/>
+      <unit id="org.eclipse.rcp.sdk.id" version="4.4.0.I20140606-1215"/>
+      <unit id="org.eclipse.emf.ecore" version="2.10.0.v20140514-1158"/>
+      <unit id="org.eclipse.emf.ecore.xmi" version="2.10.0.v20140514-1158"/>
+      <unit id="org.eclipse.emf.ecore.change" version="2.10.0.v20140514-1158"/>
+      <unit id="org.eclipse.emf.common" version="2.10.0.v20140514-1158"/>
       <repository location="http://download.eclipse.org/releases/luna/"/>
     </location>
   </locations>

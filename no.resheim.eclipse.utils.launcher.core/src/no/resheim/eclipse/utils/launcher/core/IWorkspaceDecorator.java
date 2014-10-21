@@ -12,12 +12,12 @@ package no.resheim.eclipse.utils.launcher.core;
 
 public interface IWorkspaceDecorator {
 
-	/**
-	 * Decorates the workspace icon with the given string.
-	 * 
-	 * @param name
-	 *            the workspace name
-	 */
-	public void decorateWorkspace(String name);
+    /**
+     * Decorates the workspace icon with the given string.
+     * 
+     * @param name
+     *            the workspace name
+     */
+    public void decorateWorkspace(String name);
 
 }

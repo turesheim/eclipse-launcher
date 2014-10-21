@@ -11,120 +11,161 @@
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.core;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class LauncherPluginTest extends LauncherPlugin {
 
-	/** eclipse.commands=<inherited commands> */
-	public final String eclipse_commands = "<eclipse.commands>";
+    /** eclipse.commands=<inherited commands> */
+	private static final String ECLIPSE_COMMANDS = "<eclipse.commands>";
 
-	/** eclipse.commands=<inherited commands> */
-	public final String eclipse_commands_ws = "<eclipse.commands>\n-data\nmyworkspace\n";
+    /** eclipse.commands=<inherited commands> */
+	private static final String ECLIPSE_COMMANDS_WS = "<eclipse.commands>\n-data\nmyworkspace\n";
 
-	/** eclipse.commands=<inherited commands> */
-	public final String eclipse_commands_vm = "<eclipse.commands>\n-vm\nmyvm\n";
+    /** eclipse.commands=<inherited commands> */
+	private static final String ECLIPSE_COMMANDS_VM = "<eclipse.commands>\n-vm\nmyvm\n";
 
-	/** eclipse.vmargs=<arguments for the virtual machine> */
-	public final String eclipse_vmargs = "some\narguments\nfor\nthe\nvm";
+    /** eclipse.vmargs=<arguments for the virtual machine> */
+	private static final String ECLIPSE_VMARGS = "some\narguments\nfor\nthe\nvm";
 
-	/** <path to the virtual machine> */
-	public final String eclipse_vm = "/path/to/vm";
+    /** <path to the virtual machine> */
+	private static final String ECLIPSE_VM = "/path/to/vm";
+
+    /** <full path to the virtual machine> */
+	private static final String ECLIPSE_VM_FULL = "/path/to/vm/Contents/Home/bin/java";
+
+	/** <full path to the virtual machine library> */
+	private static final String ECLIPSE_VM_FULL_LIB = "/path/to/vm/Contents/Home/jre/lib/server/libjvm.dylib";
 
 	/** <full path to the virtual machine> */
-	public final String eclipse_vm_full = "/path/to/vm/Contents/Home/bin/java";
+	private static final String ECLIPSE_VM_HOME = "/path/to/vm/Contents/Home";
 
-	@Test
-	public void testBuildCommandLine_NoWorkspace() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				null, eclipse_commands, null, null);
-		Assert.assertEquals(1, args.size());
-		Assert.assertEquals(eclipse_commands, args.get(0));
-	}
+	/**
+	 * Test to verify that the command line is correctly built when only
+	 * commands have been submitted.
+	 */
+    @Test
+    public void testBuildCommandLineWithNoWorkspace() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS, null, null);
+        Assert.assertEquals(1, args.size());
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(0));
+    }
 
-	@Test
-	public void testBuildCommandLine_Workspace() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				"workspace", eclipse_commands, null, null);
-		Assert.assertEquals(3, args.size());
-		Assert.assertEquals(eclipse_commands, args.get(0));
-		Assert.assertEquals("-data", args.get(1));
+	/**
+	 * Test to verify that the command line is correctly built when commands and
+	 * workspace has been specified.
+	 */
+    @Test
+    public void testBuildCommandLineWithWorkspace() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(
+				"workspace", ECLIPSE_COMMANDS, null, null);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(0));
+        Assert.assertEquals("-data", args.get(1));
 		Assert.assertEquals("workspace", args.get(2));
-	}
+    }
 
-	/**
-	 * The -data argument should be stripped from the eclipse.commands segment.
-	 *
-	 * @throws Exception
+    /**
+	 * Test to verify that the command line is correctly built when original
+	 * workspace has been specified at the command line and a new workspace is
+	 * also specified. The -data argument must be stripped from the
+	 * eclipse.commands segment and a new "-data workspace" is replacing it.
 	 */
-	@Test
-	public void testBuildCommandLine_InheritedWorkspace() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				"workspace", eclipse_commands_ws, null, null);
-		Assert.assertEquals(3, args.size());
-		Assert.assertEquals(eclipse_commands, args.get(0));
-		Assert.assertEquals("-data", args.get(1));
+    @Test
+    public void testBuildCommandLineWithInheritedWorkspace() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(
+				"workspace", ECLIPSE_COMMANDS_WS, null, null);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(0));
+        Assert.assertEquals("-data", args.get(1));
 		Assert.assertEquals("workspace", args.get(2));
-	}
+    }
 
-	@Test
-	public void testBuildCommandLine_InheritedWorkspaceSpecified()
-			throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				null, eclipse_commands_ws, null, null);
-		Assert.assertEquals(1, args.size());
-		Assert.assertEquals(eclipse_commands, args.get(0));
-	}
+    @Test
+    public void testBuildCommandLineWithInheritedWorkspaceSpecified() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS_WS, null, null);
+        Assert.assertEquals(1, args.size());
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(0));
+    }
 
-	@Test
-	public void testBuildCommandLine_Vm() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				null, eclipse_commands, null, eclipse_vm);
+    @Test
+    public void testBuildCommandLineWithVm() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS, null, ECLIPSE_VM);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals("-vm", args.get(0));
+		Assert.assertEquals(ECLIPSE_VM_FULL, args.get(1));
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
+    }
+
+    @Test
+    public void testBuildCommandLineWithVmHome() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS, null, ECLIPSE_VM_HOME);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals("-vm", args.get(0));
+        Assert.assertEquals(ECLIPSE_VM_FULL, args.get(1));
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
+    }
+    @Test
+    public void testBuildCommandLineWithVmFull() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS, null, ECLIPSE_VM_FULL);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals("-vm", args.get(0));
+        Assert.assertEquals(ECLIPSE_VM_FULL, args.get(1));
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
+    }
+    /**
+     * The -vm argument should be stripped from the eclipse.commands segment.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBuildCommandLineWithInheritedVm() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS_VM, null, ECLIPSE_VM);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals("-vm", args.get(0));
+		Assert.assertEquals(ECLIPSE_VM_FULL, args.get(1));
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
+    }
+
+    /**
+     * The "-vm" option was specified in arguments and must be replaced.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBuildCommandLineWithInheritedVmSpecified() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS_VM, null, null);
+        Assert.assertEquals(3, args.size());
+        Assert.assertEquals("-vm", args.get(0));
+		Assert.assertEquals("myvm/Contents/Home/bin/java", args.get(1));
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
+    }
+
+    @Test
+    public void testBuildCommandLineWithVmArgs() {
+        List<String> args = LauncherPlugin.getDefault().buildCommandLine(null,
+                ECLIPSE_COMMANDS, ECLIPSE_VMARGS, null);
+        Assert.assertEquals(7, args.size());
+        Assert.assertEquals(ECLIPSE_COMMANDS, args.get(0));
+        Assert.assertEquals("-vmargs", args.get(1));
+        Assert.assertEquals("some", args.get(2));
+    }
+
+	public void testCommandLineDylibVM() {
+		List<String> args = LauncherPlugin.getDefault().buildCommandLine(null, ECLIPSE_COMMANDS, null,
+				ECLIPSE_VM_FULL_LIB);
 		Assert.assertEquals(3, args.size());
 		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals(eclipse_vm, args.get(1));
-		Assert.assertEquals(eclipse_commands, args.get(2));
-	}
-
-	/**
-	 * The -vm argument should be stripped from the eclipse.commands segment.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testBuildCommandLine_InheritedVm() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				null, eclipse_commands_vm, null, eclipse_vm);
-		Assert.assertEquals(3, args.size());
-		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals(eclipse_vm, args.get(1));
-		Assert.assertEquals(eclipse_commands, args.get(2));
-	}
-
-	/**
-	 * The "-vm" option was specified in arguments and must be replaced.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testBuildCommandLine_InheritedVmSpecified() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				null, eclipse_commands_vm, null, null);
-		Assert.assertEquals(3, args.size());
-		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals("myvm", args.get(1));
-		Assert.assertEquals(eclipse_commands, args.get(2));
-	}
-
-	@Test
-	public void testBuildCommandLine_VmArgs() throws Exception {
-		ArrayList<String> args = LauncherPlugin.getDefault().buildCommandLine(
-				null, eclipse_commands, eclipse_vmargs, null);
-		Assert.assertEquals(7, args.size());
-		Assert.assertEquals(eclipse_commands, args.get(0));
-		Assert.assertEquals("-vmargs", args.get(1));
-		Assert.assertEquals("some", args.get(2));
+		Assert.assertEquals(ECLIPSE_VM_FULL_LIB, args.get(1));
+		Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
 	}
 }

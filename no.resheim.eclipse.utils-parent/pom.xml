@@ -13,7 +13,7 @@
 	<version>1.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Eclipse Utilities Parent</name>
+	<name>Eclipse Utilities</name>
 
 	<issueManagement>
 		<url>https://github.com/turesheim/eclipse-utilities/issues</url>
@@ -40,9 +40,28 @@
 		<tycho.version>0.19.0</tycho.version>
 		<tycho-extras-version>0.19.0</tycho-extras-version>
 		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
-		<eclipse-site>http://download.eclipse.org/releases/kepler</eclipse-site>
+		<eclipse-site>http://download.eclipse.org/releases/luna</eclipse-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+		<!-- Sonar + JaCoCo -->
+		<sonar.language>java</sonar.language>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.junit.reportsPath>${project.basedir}/target/surefire-reports/</sonar.junit.reportsPath>
+		<!-- <sonar.skippedModules>no.resheim.eclipse.launcher.tests</sonar.skippedModules> -->
 	</properties>
+
+	<profiles>
+		<!-- Connect to the locally running MySQL/MariaDB database for storing results  -->
+		<profile>
+			<id>sonar</id>
+			<properties>
+				<sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true</sonar.jdbc.url>
+				<sonar.jdbc.username>sonar</sonar.jdbc.username>
+				<sonar.jdbc.password>sonar</sonar.jdbc.password>
+			</properties>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
@@ -64,7 +83,7 @@
 		</pluginRepository>
 		<pluginRepository>
 			<id>maven.eclipse.org</id>
-			<url>http://maven.eclipse.org/nexus/content/repositories/milestone-indigo/</url>
+			<url>http://maven.eclipse.org/nexus/content/repositories/milestone-luna/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -138,6 +157,27 @@
 						<version>${tycho-extras-version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.2-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>prepare-integration-tests</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<include>no.*</include>
+							<include>org.junit.*</include>
+							<!-- Where to put jacoco coverage report -->
+							<destFile>${sonar.jacoco.reportPath}</destFile>
+							<append>true</append>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>JVMArch</key>
+		<string>x86_64</string>
+		<key>JVMBlacklisted</key>
+		<false/>
+		<key>JVMBundleID</key>
+		<string>com.oracle.java.8u20.jdk</string>
+		<key>JVMEnabled</key>
+		<true/>
+		<key>JVMHomePath</key>
+		<string>/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home</string>
+		<key>JVMIsBuiltIn</key>
+		<false/>
+		<key>JVMName</key>
+		<string>Java SE 8</string>
+		<key>JVMPlatformVersion</key>
+		<string>1.8</string>
+		<key>JVMVendor</key>
+		<string>Oracle Corporation</string>
+		<key>JVMVersion</key>
+		<string>1.8.0_20</string>
+	</dict>
+	<dict>
+		<key>JVMArch</key>
+		<string>x86_64</string>
+		<key>JVMBlacklisted</key>
+		<false/>
+		<key>JVMBundleID</key>
+		<string>com.oracle.java.7u55.jdk</string>
+		<key>JVMEnabled</key>
+		<true/>
+		<key>JVMHomePath</key>
+		<string>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home</string>
+		<key>JVMIsBuiltIn</key>
+		<false/>
+		<key>JVMName</key>
+		<string>Java SE 7</string>
+		<key>JVMPlatformVersion</key>
+		<string>1.7</string>
+		<key>JVMVendor</key>
+		<string>Oracle Corporation</string>
+		<key>JVMVersion</key>
+		<string>1.7.0_55</string>
+	</dict>
+</array>
+</plist>

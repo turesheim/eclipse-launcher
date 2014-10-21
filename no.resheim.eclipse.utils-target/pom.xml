@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>no.resheim.elibrarium-target</artifactId>
+	<artifactId>no.resheim.eclipse.utils-target</artifactId>
 	<packaging>pom</packaging>
     <version>1.4.0-SNAPSHOT</version>
 	<name>Eclipse Utilities Target Definition</name>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Torkild U. Resheim.
+ * Copyright (c) 2012, 2013, 2014 Torkild U. Resheim.
  *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -11,16 +11,22 @@
  *******************************************************************************/
 package no.resheim.eclipse.utils.launcher.core;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -29,12 +35,18 @@ import org.eclipse.ui.internal.ide.IDEInternalPreferences;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
+/**
+ * Contains shared launcher mechanisms. While this plug-in is platform
+ * independent, it does contain some platform specific code. Make sure to handle
+ * this when implementing support for other platforms than OS X.
+ */
 @SuppressWarnings("restriction")
 public class LauncherPlugin extends AbstractUIPlugin {
 
-	private static final String APPLE_JAVA = "/System/Library/Frameworks/JavaVM.framework"; //$NON-NLS-1$
+	private static final String APPLE_JAVA = "/System/Library/"; //$NON-NLS-1$
 
 	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace"; //$NON-NLS-1$
 
@@ -53,6 +65,24 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	/** Argument key for specifying JVM arguments */
 	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
+	/** System new line character */
+	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
+
+	/**
+	 * @since 2.0
+	 */
+	public static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
+
+	/**
+	 * @since 2.0
+	 */
+	public static final String PROP_VM = "eclipse.vm"; //$NON-NLS-1$
+
+	/**
+	 * @since 2.0
+	 */
+	public static final String PROP_COMMANDS = "eclipse.commands"; //$NON-NLS-1$
+
 	/**
 	 * Returns the shared instance.
 	 *
@@ -63,10 +93,12 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Create and return a string with command line options for eclipse.exe that will launch a new workbench that is the
-	 * same as the currently running one, but using the argument <i>workspace</i> as it's new workspace.
+	 * Create and return a string with command line options for starting
+	 * Eclipse. If the workspace to use already has been specified in
+	 * <i>commands</i> this property will be overridden using the new workspace.
+	 * A similar replacement is done for the virtual machine path.
 	 * <p>
-	 * Copied from {@link OpenWorkspaceAction}
+	 * Similar to {@link OpenWorkspaceAction}
 	 * </p>
 	 *
 	 * @param workspace
@@ -78,9 +110,10 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * @param vm
 	 *            path to the Java virtual machine or null
 	 * @return a string of command line options or null on error
+	 * @since 2.0
 	 */
-	public ArrayList<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
-		ArrayList<String> arguments = new ArrayList<String>();
+	List<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
+		List<String> arguments = new ArrayList<String>();
 		// Handle the command string
 		String[] argStrings = commands.split("\\n"); //$NON-NLS-1$
 		boolean hasData = false;
@@ -93,32 +126,34 @@ public class LauncherPlugin extends AbstractUIPlugin {
 					arguments.remove(string);
 					i++;
 				} else {
-					// Replace the workspace argument if a workspace has been selected
+					// Replace the workspace argument if a workspace has been
+					// selected
 					argStrings[i + 1] = workspace;
 					hasData = true;
 				}
 			}
 			if (string.equals(CMD_VM)) {
+				arguments.remove(string);
 				if (vm == null) {
 					// Re-use the "-vm" argument
-					arguments.remove(string);
 					vm = argStrings[i + 1];
-					i++;
-				} else {
-					// Ignore the "-vm" argument
-					arguments.remove(string);
-					i++;
 				}
+				// Ignore the "-vm" argument, it will be added later
+				i++;
 			}
 		}
 		// Add the "-vm" argument unless default is used
 		if (vm != null) {
-			File vmFile = new File(vm);
-			// Handle that Eclipse pre 4.3 does not add full path to a Java
-			// executable and fix this by pointing to the expected location.
+			// Handle that Eclipse pre 4.3 does not add/require full path to a
+			// Java executable and fix this by pointing to the expected
+			// location.
 			// https://github.com/turesheim/eclipse-utilities/issues/5245
-			if (vmFile.isDirectory() && !vm.startsWith(APPLE_JAVA)) {
-				vm = vm + "/Contents/Home/bin/java"; //$NON-NLS-1$
+			if (!vm.startsWith(APPLE_JAVA)) {
+				if (vm.endsWith("Contents/Home")) { //$NON-NLS-1$
+					vm = vm + "/bin/java"; //$NON-NLS-1$
+				} else if (!vm.endsWith("java") && !vm.endsWith("libjvm.dylib")) { //$NON-NLS-1$ //$NON-NLS-2$
+					vm = vm + "/Contents/Home/bin/java"; //$NON-NLS-1$
+				}
 			}
 			arguments.add(0, vm);
 			arguments.add(0, CMD_VM);
@@ -147,14 +182,14 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
 		for (IConfigurationElement configurationElement : synchronizers) {
-			if (configurationElement.getName().equals("decorator")) { //$NON-NLS-1$
+			if ("decorator".equals(configurationElement.getName())) { //$NON-NLS-1$
 				try {
 					Object object = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
 					if (object instanceof IWorkspaceDecorator) {
-						return ((IWorkspaceDecorator) object);
+						return (IWorkspaceDecorator) object;
 					}
 				} catch (CoreException e) {
-					e.printStackTrace();
+					StatusManager.getManager().handle(e, PLUGIN_ID);
 				}
 			}
 		}
@@ -183,7 +218,29 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Decorates the workspace icon with the workspace name if a mechanism for doing so is available.
+	 * Returns the Eclipse executable. In case of OS X the file pointing to the
+	 * "Eclipse.app" folder will be return.
+	 *
+	 * @return the Eclipse launcher or <code>null</code>if it could not be found
+	 * @since 2.0
+	 */
+	public File getLauncherApplication() {
+		String launcher = System.getProperty("eclipse.launcher"); //$NON-NLS-1$
+		if (launcher != null) {
+			// We need to use the Eclipse.app folder so that the application
+			// is opened properly. Otherwise we'll also open a shell which is
+			// not desirable.
+			final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
+			if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
+				return application;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Decorates the workspace icon with the workspace name if a mechanism for
+	 * doing so is available.
 	 *
 	 * @see #getDecorator()
 	 */
@@ -191,7 +248,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		final IWorkspaceDecorator decorator = getDecorator();
 		if (decorator != null) {
 			SafeRunnable safeRunnable = new SafeRunnable() {
-				public void run() throws Exception {
+				public void run() {
 					// Obtain the workspace name from preferences
 					IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
 					String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
@@ -205,6 +262,64 @@ public class LauncherPlugin extends AbstractUIPlugin {
 			};
 			SafeRunner.run(safeRunnable);
 		}
+	}
+
+	/**
+	 * Launches a new Eclipse instance using
+	 *
+	 * @param workspace
+	 *            path to the workspace
+	 * @param app
+	 *            the eclipse application executable
+	 * @param cmd
+	 *            contents of the system property "eclipse.commands"
+	 * @param vmargs
+	 *            contents of the system property "eclipse.vmargs"
+	 * @param vm
+	 *            path to the Java virtual machine or <code>null</code>
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @since 2.0
+	 */
+	public IStatus doLaunch(final String workspace, final File app, String cmd, String vmargs, String vm)
+			throws IOException, InterruptedException {
+
+		List<String> args = buildCommandLine(workspace, cmd, vmargs, vm);
+
+		// Arguments for OS X in reverse order
+		args.add(0, "--args"); //$NON-NLS-1$
+		args.add(0, app.getAbsolutePath());
+		args.add(0, "-n"); //$NON-NLS-1$
+		args.add(0, "open"); //$NON-NLS-1$
+		StringBuilder sb = new StringBuilder();
+		for (String string : args) {
+			sb.append(string);
+			sb.append(' ');
+		}
+
+		// Do some logging
+		StatusManager.getManager().handle(
+				new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
+						"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
+
+		// Execute the command line
+		Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
+		if (p.waitFor() != 0) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			sb.setLength(0);
+			String in = null;
+			while ((in = br.readLine()) != null) {
+				sb.append(NEW_LINE);
+				sb.append(in);
+			}
+			br.close();
+			if (sb.length() > 0) {
+				return new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+						"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
+			}
+		}
+		return Status.OK_STATUS;
 	}
 
 }
