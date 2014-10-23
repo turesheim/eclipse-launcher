@@ -13,6 +13,8 @@ package no.resheim.eclipse.utils.launcher.core;
 
 import java.util.List;
 
+import no.resheim.eclipse.utils.launcher.core.LauncherPlugin;
+
 import org.junit.Assert;
 import org.junit.Test;
 

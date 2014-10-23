@@ -19,16 +19,63 @@
 		<tycho.scmUrl>scm:git:git://github.com/turesheim/eclipse-utilities.git</tycho.scmUrl>
 	</properties>
 
+	<!-- This bundle is a fragment which makes it hard to unit-test it's code.
+		In order to facilitate testing we use plain JUnit tests as supported by Maven. -->
 	<build>
-		<plugins>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>src-test</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src-test/no/resheim/eclipse/utils/launcher/macosx</directory>
+            </testResource>
+        </testResources>
+        <plugins>
 			<plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-surefire-plugin</artifactId>
-                <version>${tycho.version}</version>
-				<configuration>
-				    <dependencies>org.junit</dependencies>
-				    <failIfNoTests>true</failIfNoTests>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.surefire</groupId>
+						<artifactId>surefire-junit47</artifactId>
+						<version>2.17</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<configuration>
+							<includes>
+								<include>**/*Test.java</include>
+							</includes>
+						</configuration>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+						<version>4.11</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>compiletests</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

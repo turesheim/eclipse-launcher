@@ -14,3 +14,4 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
 Export-Package: no.resheim.eclipse.utils.launcher.core
 Eclipse-ExtensibleAPI: true
+Service-Component: OSGI-INF/*.xml

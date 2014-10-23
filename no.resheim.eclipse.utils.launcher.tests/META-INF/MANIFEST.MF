@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests
+Bundle-Name: Tests Fragment
 Bundle-SymbolicName: no.resheim.eclipse.utils.launcher.tests;singleton:=true
 Bundle-Version: 2.0.0.qualifier
+Fragment-Host: no.resheim.eclipse.utils.launcher.core;bundle-version="1.1.0"
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Fragment-Host: no.resheim.eclipse.utils.launcher.core;bundle-version="1.1.0"
+Import-Package: no.resheim.eclipse.utils.launcher.macosx

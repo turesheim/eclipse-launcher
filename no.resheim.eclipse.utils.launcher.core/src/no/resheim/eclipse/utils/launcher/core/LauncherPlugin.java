@@ -37,6 +37,8 @@ import org.eclipse.ui.internal.ide.actions.OpenWorkspaceAction;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Contains shared launcher mechanisms. While this plug-in is platform
@@ -82,6 +84,8 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * @since 2.0
 	 */
 	public static final String PROP_COMMANDS = "eclipse.commands"; //$NON-NLS-1$
+
+	private static BundleContext bundleContext;
 
 	/**
 	 * Returns the shared instance.
@@ -174,6 +178,13 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	}
 
 	/**
+	 * @since 2.0
+	 */
+	public static BundleContext getContext() {
+		return bundleContext;
+	}
+
+	/**
 	 * Returns the workspace decorator if one is available.
 	 *
 	 * @return the workspace decorator or <code>null</code>
@@ -181,24 +192,44 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	protected IWorkspaceDecorator getDecorator() {
 		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
 		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
-		for (IConfigurationElement configurationElement : synchronizers) {
-			if ("decorator".equals(configurationElement.getName())) { //$NON-NLS-1$
-				try {
+		try {
+			for (IConfigurationElement configurationElement : synchronizers) {
+				if ("decorator".equals(configurationElement.getName())) { //$NON-NLS-1$
 					Object object = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
 					if (object instanceof IWorkspaceDecorator) {
 						return (IWorkspaceDecorator) object;
 					}
-				} catch (CoreException e) {
-					StatusManager.getManager().handle(e, PLUGIN_ID);
 				}
 			}
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(e, PLUGIN_ID);
 		}
 		return null;
+	}
+
+	List<JRE> runtimes = new ArrayList<>();
+
+	/**
+	 * Gathers and returns a list of all Java Runtime Environments found on the
+	 * host. If none are found, the list will be empty.
+	 *
+	 * @since 2.0
+	 */
+	public List<JRE> getJavaRuntimeEnvironments() {
+		BundleContext context = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
+		ServiceReference<?> serviceReference = context.getServiceReference(IJavaLocatorService.class);
+		if (serviceReference != null) {
+			IJavaLocatorService service = (IJavaLocatorService) context.getService(serviceReference);
+			runtimes = service.getRuntimes();
+			context.ungetService(serviceReference);
+		}
+		return runtimes;
 	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		bundleContext = context;
 		plugin = this;
 		IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
 		store.addPropertyChangeListener(new IPropertyChangeListener() {
@@ -215,11 +246,12 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		bundleContext = null;
 	}
 
 	/**
-	 * Returns the Eclipse executable. In case of OS X the file pointing to the
-	 * "Eclipse.app" folder will be return.
+	 * Returns the Eclipse executable. In case of OS X; the file pointing to the
+	 * "Eclipse.app" folder will be returned.
 	 *
 	 * @return the Eclipse launcher or <code>null</code>if it could not be found
 	 * @since 2.0

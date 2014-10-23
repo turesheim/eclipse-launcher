@@ -1,35 +1,38 @@
-package test;
+package no.resheim.eclipse.utils.launcher.macosx;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import no.resheim.eclipse.utils.launcher.core.JRE;
-import no.resheim.eclipse.utils.launcher.macosx.OSXJavaLocator;
 
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 /**
  * @since 2.0
  */
+@SuppressWarnings("nls")
 public class OSXJavaLocatorTest {
 
-	@SuppressWarnings("nls")
 	@Test
-	public void testParser() throws ParserConfigurationException, SAXException, FileNotFoundException, IOException {
+	public void testStreamToString() {
+		assertNotNull("Test file missing", getClass().getResource("/java_home_x.txt"));
+	}
+
+	@Test
+	public void testParser() throws Exception {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false);
 		factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 		SAXParser saxParser = factory.newSAXParser();
+
 		OSXJavaLocator locator = new OSXJavaLocator();
-		saxParser.parse(this.getClass().getResourceAsStream("java_home_x.txt"), locator);
+
+		saxParser.parse(getClass().getResourceAsStream("/java_home_x.txt"), locator);
 		List<JRE> runtimes = locator.getRuntimes();
 		assertEquals(2, runtimes.size());
 		assertEquals("/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home", runtimes.get(0).getPath());

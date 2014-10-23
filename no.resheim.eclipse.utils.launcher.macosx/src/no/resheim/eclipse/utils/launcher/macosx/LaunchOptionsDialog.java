@@ -206,8 +206,7 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 		runtimeCombo = new Combo(parent, SWT.READ_ONLY);
 		runtimeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		try {
-			OSXJavaLocator locator = new OSXJavaLocator();
-			runtimes = locator.getRuntimes();
+			runtimes = LauncherPlugin.getDefault().getJavaRuntimeEnvironments();
 			for (JRE jre : runtimes) {
 				runtimeCombo.add(jre.toString());
 			}

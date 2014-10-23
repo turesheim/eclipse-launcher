@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import no.resheim.eclipse.utils.launcher.core.IJavaLocatorService;
 import no.resheim.eclipse.utils.launcher.core.JRE;
 
 import org.xml.sax.Attributes;
@@ -33,7 +34,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Torkild U. Resheim
  * @since 2.0
  */
-public class OSXJavaLocator extends DefaultHandler {
+public class OSXJavaLocator extends DefaultHandler implements IJavaLocatorService {
 
 	/** A list of plist keys used by /usr/libexec/java_home */
 	private enum KEY {
@@ -102,19 +103,22 @@ public class OSXJavaLocator extends DefaultHandler {
 		currentKey = null;
 	}
 
-	public List<JRE> getRuntimes() throws IOException, ParserConfigurationException, SAXException {
+	public List<JRE> getRuntimes() {
 		if (runtimes.isEmpty()) {
+			try {
+				SAXParserFactory factory = SAXParserFactory.newInstance();
+				factory.setValidating(false);
+				factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
+				SAXParser saxParser = factory.newSAXParser();
 
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			factory.setValidating(false);
-			factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
-			SAXParser saxParser = factory.newSAXParser();
+				Runtime rt = Runtime.getRuntime();
+				String[] commands = { "/usr/libexec/java_home", "-X" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-			Runtime rt = Runtime.getRuntime();
-			String[] commands = { "/usr/libexec/java_home", "-X" }; //$NON-NLS-1$ //$NON-NLS-2$
-
-			Process proc = rt.exec(commands, null, null);
-			saxParser.parse(proc.getInputStream(), this);
+				Process proc = rt.exec(commands, null, null);
+				saxParser.parse(proc.getInputStream(), this);
+			} catch (SAXException | IOException | ParserConfigurationException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		return runtimes;
 	}
