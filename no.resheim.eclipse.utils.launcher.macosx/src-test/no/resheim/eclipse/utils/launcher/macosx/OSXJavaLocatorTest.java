@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import no.resheim.eclipse.utils.launcher.core.JRE;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,9 +19,19 @@ import org.junit.Test;
 @SuppressWarnings("nls")
 public class OSXJavaLocatorTest {
 
+	private String root = "";
+
+	@Before
+	public void before() {
+		String property = System.getProperty("testResourceRoot");
+		if (null != property) {
+			root = property;
+		}
+	}
+
 	@Test
 	public void testStreamToString() {
-		assertNotNull("Test file missing", getClass().getResource("/java_home_x.txt"));
+		assertNotNull("Test file missing", getClass().getResource(root + "java_home_x.txt"));
 	}
 
 	@Test
@@ -32,7 +43,7 @@ public class OSXJavaLocatorTest {
 
 		OSXJavaLocator locator = new OSXJavaLocator();
 
-		saxParser.parse(getClass().getResourceAsStream("/java_home_x.txt"), locator);
+		saxParser.parse(getClass().getResourceAsStream(root + "java_home_x.txt"), locator);
 		List<JRE> runtimes = locator.getRuntimes();
 		assertEquals(2, runtimes.size());
 		assertEquals("/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home", runtimes.get(0).getPath());
