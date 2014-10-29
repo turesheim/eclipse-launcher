@@ -51,13 +51,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 
 	private static final String APPLE_JAVA = "/System/Library/"; //$NON-NLS-1$
 
-	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace"; //$NON-NLS-1$
-
-	/** The plug-in ID */
-	public static final String PLUGIN_ID = "no.resheim.eclipse.utils.launcher.core"; //$NON-NLS-1$
-
-	/** The shared instance */
-	private static LauncherPlugin plugin;
+	private static BundleContext bundleContext;
 
 	/** Argument key for specifying the workspace root folder */
 	private static final String CMD_DATA = "-data"; //$NON-NLS-1$
@@ -68,13 +62,21 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	/** Argument key for specifying JVM arguments */
 	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
+	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace"; //$NON-NLS-1$
+
 	/** System new line character */
 	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
+
+	/** The shared instance */
+	private static LauncherPlugin plugin;
+
+	/** The plug-in ID */
+	public static final String PLUGIN_ID = "no.resheim.eclipse.utils.launcher.core"; //$NON-NLS-1$
 
 	/**
 	 * @since 2.0
 	 */
-	public static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
+	public static final String PROP_COMMANDS = "eclipse.commands"; //$NON-NLS-1$
 
 	/**
 	 * @since 2.0
@@ -84,18 +86,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	/**
 	 * @since 2.0
 	 */
-	public static final String PROP_COMMANDS = "eclipse.commands"; //$NON-NLS-1$
-
-	private static BundleContext bundleContext;
-
-	/**
-	 * Returns the shared instance.
-	 *
-	 * @return the shared instance
-	 */
-	public static LauncherPlugin getDefault() {
-		return plugin;
-	}
+	public static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
 
 	/**
 	 * Create and return a string with command line options for starting
@@ -186,115 +177,12 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the workspace decorator if one is available.
+	 * Returns the shared instance.
 	 *
-	 * @return the workspace decorator or <code>null</code>
+	 * @return the shared instance
 	 */
-	protected IWorkspaceDecorator getDecorator() {
-		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
-		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
-		try {
-			for (IConfigurationElement configurationElement : synchronizers) {
-				if ("decorator".equals(configurationElement.getName())) { //$NON-NLS-1$
-					Object object = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
-					if (object instanceof IWorkspaceDecorator) {
-						return (IWorkspaceDecorator) object;
-					}
-				}
-			}
-		} catch (CoreException e) {
-			StatusManager.getManager().handle(e, PLUGIN_ID);
-		}
-		return null;
-	}
-
-	List<JRE> runtimes = new ArrayList<>();
-
-	/**
-	 * Gathers and returns a list of all Java Runtime Environments found on the
-	 * host. If none are found, the list will be empty.
-	 *
-	 * @since 2.0
-	 */
-	public List<JRE> getJavaRuntimeEnvironments() {
-		BundleContext context = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
-		ServiceReference<?> serviceReference = context.getServiceReference(IJavaLocatorService.class);
-		if (serviceReference != null) {
-			IJavaLocatorService service = (IJavaLocatorService) context.getService(serviceReference);
-			runtimes = service.getRuntimes();
-			context.ungetService(serviceReference);
-		}
-		return runtimes;
-	}
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		bundleContext = context;
-		plugin = this;
-		IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
-		store.addPropertyChangeListener(new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(IDEInternalPreferences.WORKSPACE_NAME)) {
-					updateDecorator();
-				}
-			}
-		});
-		updateDecorator();
-	}
-
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-		bundleContext = null;
-	}
-
-	/**
-	 * Returns the Eclipse executable. In case of OS X; the file pointing to the
-	 * "Eclipse.app" folder will be returned.
-	 *
-	 * @return the Eclipse launcher or <code>null</code>if it could not be found
-	 * @since 2.0
-	 */
-	public File getLauncherApplication() {
-		String launcher = System.getProperty("eclipse.launcher"); //$NON-NLS-1$
-		if (launcher != null) {
-			// We need to use the Eclipse.app folder so that the application
-			// is opened properly. Otherwise we'll also open a shell which is
-			// not desirable.
-			final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
-			if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
-				return application;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Decorates the workspace icon with the workspace name if a mechanism for
-	 * doing so is available.
-	 *
-	 * @see #getDecorator()
-	 */
-	private void updateDecorator() {
-		final IWorkspaceDecorator decorator = getDecorator();
-		if (decorator != null) {
-			SafeRunnable safeRunnable = new SafeRunnable() {
-				public void run() {
-					// Obtain the workspace name from preferences
-					IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
-					String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
-					// Use path segment if no preference is set
-					if (name == null || name.length() == 0) {
-						IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-						name = root.getLocation().toFile().getName();
-					}
-					decorator.decorateWorkspace(name);
-				}
-			};
-			SafeRunner.run(safeRunnable);
-		}
+	public static LauncherPlugin getDefault() {
+		return plugin;
 	}
 
 	/**
@@ -356,6 +244,117 @@ public class LauncherPlugin extends AbstractUIPlugin {
 			throw new LaunchException(e);
 		}
 		return Status.OK_STATUS;
+	}
+
+	/**
+	 * Returns the workspace decorator if one is available.
+	 *
+	 * @return the workspace decorator or <code>null</code>
+	 */
+	protected IWorkspaceDecorator getDecorator() {
+		IExtensionPoint ePoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
+		IConfigurationElement[] synchronizers = ePoint.getConfigurationElements();
+		try {
+			for (IConfigurationElement configurationElement : synchronizers) {
+				if ("decorator".equals(configurationElement.getName())) { //$NON-NLS-1$
+					Object object = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
+					if (object instanceof IWorkspaceDecorator) {
+						return (IWorkspaceDecorator) object;
+					}
+				}
+			}
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(e, PLUGIN_ID);
+		}
+		return null;
+	}
+
+	/**
+	 * Gathers and returns a list of all Java Runtime Environments found on the
+	 * host. If none are found, the list will be empty.
+	 *
+	 * @since 2.0
+	 */
+	public List<JRE> getJavaRuntimeEnvironments() {
+		List<JRE> runtimes = new ArrayList<>();
+		BundleContext context = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
+		ServiceReference<?> serviceReference = context.getServiceReference(IJavaLocatorService.class);
+		if (serviceReference != null) {
+			IJavaLocatorService service = (IJavaLocatorService) context.getService(serviceReference);
+			runtimes = service.getRuntimes();
+			context.ungetService(serviceReference);
+		}
+		return runtimes;
+	}
+
+	/**
+	 * Returns the Eclipse executable. In case of OS X; the file pointing to the
+	 * "Eclipse.app" folder will be returned.
+	 *
+	 * @return the Eclipse launcher or <code>null</code>if it could not be found
+	 * @since 2.0
+	 */
+	public File getLauncherApplication() {
+		String launcher = System.getProperty("eclipse.launcher"); //$NON-NLS-1$
+		if (launcher != null) {
+			// We need to use the Eclipse.app folder so that the application
+			// is opened properly. Otherwise we'll also open a shell which is
+			// not desirable.
+			final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
+			if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
+				return application;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		bundleContext = context;
+		plugin = this;
+		IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+		store.addPropertyChangeListener(new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getProperty().equals(IDEInternalPreferences.WORKSPACE_NAME)) {
+					updateDecorator();
+				}
+			}
+		});
+		updateDecorator();
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+		super.stop(context);
+		bundleContext = null;
+	}
+
+	/**
+	 * Decorates the workspace icon with the workspace name if a mechanism for
+	 * doing so is available.
+	 *
+	 * @see #getDecorator()
+	 */
+	private void updateDecorator() {
+		final IWorkspaceDecorator decorator = getDecorator();
+		if (decorator != null) {
+			SafeRunnable safeRunnable = new SafeRunnable() {
+				public void run() {
+					// Obtain the workspace name from preferences
+					IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+					String name = store.getString(IDEInternalPreferences.WORKSPACE_NAME);
+					// Use path segment if no preference is set
+					if (name == null || name.length() == 0) {
+						IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+						name = root.getLocation().toFile().getName();
+					}
+					decorator.decorateWorkspace(name);
+				}
+			};
+			SafeRunner.run(safeRunnable);
+		}
 	}
 
 }
