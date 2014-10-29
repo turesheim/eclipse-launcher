@@ -21,6 +21,7 @@ import java.util.Map;
 
 import no.resheim.eclipse.utils.launcher.core.EclipseConfiguration;
 import no.resheim.eclipse.utils.launcher.core.JRE;
+import no.resheim.eclipse.utils.launcher.core.LaunchException;
 import no.resheim.eclipse.utils.launcher.core.LauncherPlugin;
 import no.resheim.eclipse.utils.launcher.macosx.LaunchOptionsDialog;
 import no.resheim.eclipse.utils.launcher.macosx.LaunchOptionsDialog.DebugMode;
@@ -117,11 +118,7 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 
 							LauncherPlugin.getDefault().doLaunch(workspace, application, cmd, ec.toString(),
 									vm.getPath());
-						} catch (IOException e) {
-							IStatus newStatus = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
-									"Could not start new Eclipse instance", e); //$NON-NLS-1$
-							StatusManager.getManager().handle(newStatus);
-						} catch (InterruptedException e) {
+						} catch (LaunchException | IOException e) {
 							IStatus newStatus = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
 									"Could not start new Eclipse instance", e); //$NON-NLS-1$
 							StatusManager.getManager().handle(newStatus);

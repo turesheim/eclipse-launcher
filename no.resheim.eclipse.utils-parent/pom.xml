@@ -37,18 +37,17 @@
 	</licenses>
 
 	<properties>
-		<tycho.version>0.19.0</tycho.version>
-		<tycho-extras-version>0.19.0</tycho-extras-version>
+		<tycho.version>0.21.0</tycho.version>
+		<tycho-extras-version>0.21.0</tycho-extras-version>
 		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
-		<eclipse-site>http://download.eclipse.org/releases/luna</eclipse-site>
-		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+		<eclipse-site>http://download.eclipse.org/releases/luna/</eclipse-site>
+		<swtbot-site>http://download.eclipse.org/technology/swtbot/releases/2.2.1/</swtbot-site>
 		<!-- Sonar + JaCoCo -->
 		<sonar.language>java</sonar.language>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.junit.reportsPath>${project.basedir}/target/surefire-reports/</sonar.junit.reportsPath>
-		<!-- <sonar.skippedModules>no.resheim.eclipse.launcher.tests</sonar.skippedModules> -->
 	</properties>
 
 	<profiles>
@@ -63,14 +62,15 @@
 		</profile>
 	</profiles>
 
+    <!-- The compile/test time target platform -->
 	<repositories>
 		<repository>
-			<id>eclipse-platform</id>
+			<id>eclipse-luna</id>
 			<layout>p2</layout>
 			<url>${eclipse-site}</url>
 		</repository>
 		<repository>
-			<id>swtbot</id>
+			<id>eclipse-swtbot-2.2.1</id>
 			<layout>p2</layout>
 			<url>${swtbot-site}</url>
 		</repository>
@@ -107,6 +107,7 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<environments>
+					<!--
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
@@ -127,12 +128,14 @@
 							<ws>win32</ws>
 							<arch>x86_64</arch>
 						</environment>
+                    -->
 						<environment>
 							<os>macosx</os>
 							<ws>cocoa</ws>
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+                    <pomDependencies>consider</pomDependencies>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -183,14 +186,13 @@
 	</build>
 
 	<modules>
-		<module>../no.resheim.eclipse.utils-target</module>
 		<module>../no.resheim.eclipse.utils.launcher-feature</module>
 		<module>../no.resheim.eclipse.utils.launcher.core</module>
 		<module>../no.resheim.eclipse.utils.launcher.macosx</module>
+        <module>../no.resheim.eclipse.utils.launcher.tests</module>
 		<module>../no.resheim.eclipse.utils.quicklook-feature</module>
 		<module>../no.resheim.eclipse.utils.quicklook.macosx</module>
 		<module>../no.resheim.eclipse.utils-site</module>
-		<module>../no.resheim.eclipse.utils.launcher.tests</module>
 	</modules>
 
 </project>

@@ -9,4 +9,16 @@ location "http://download.eclipse.org/releases/luna/" {
     org.eclipse.emf.ecore.xmi
     org.eclipse.emf.ecore.change
     org.eclipse.emf.common
+    // For SWTBot
+    org.apache.log4j
+    org.apache.commons.collections
+}
+
+// UI Testing
+location "http://download.eclipse.org/technology/swtbot/releases/2.2.1/" {
+    org.eclipse.swtbot.forms.source.feature.group
+    org.eclipse.swtbot.eclipse.source.feature.group
+    org.eclipse.swtbot.source.feature.group
+    org.hamcrest.library
+    org.hamcrest.core
 }

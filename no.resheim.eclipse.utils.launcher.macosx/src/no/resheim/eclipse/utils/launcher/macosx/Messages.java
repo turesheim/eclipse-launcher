@@ -34,7 +34,6 @@ public class Messages extends NLS {
 	public static String LaunchOptionsDialog_8;
 	public static String LaunchOptionsDialog_9;
 	public static String LaunchOptionsDialog_grpHeapSpaceAllocation_text;
-	public static String LaunchOptionsDialog_text_text;
 	public static String LaunchOptionsDialog_lblPermgenspace_text;
 	public static String LaunchOptionsDialog_grpDebugging_text;
 	static {

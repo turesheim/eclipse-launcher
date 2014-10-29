@@ -2,6 +2,7 @@ package no.resheim.eclipse.utils.launcher.macosx;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -32,6 +33,13 @@ public class OSXJavaLocatorTest {
 	@Test
 	public void testStreamToString() {
 		assertNotNull("Test file missing", getClass().getResource(root + "java_home_x.txt"));
+	}
+
+	@Test
+	public void testGetRuntimes() {
+		OSXJavaLocator locator = new OSXJavaLocator();
+		List<JRE> runtimes = locator.getRuntimes();
+		assertTrue(runtimes.size() > 0);
 	}
 
 	@Test

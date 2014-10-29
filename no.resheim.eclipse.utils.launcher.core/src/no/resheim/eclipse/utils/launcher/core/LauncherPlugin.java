@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +117,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * @return a string of command line options or null on error
 	 * @since 2.0
 	 */
-	List<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
+	static List<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
 		List<String> arguments = new ArrayList<String>();
 		// Handle the command string
 		String[] argStrings = commands.split("\\n"); //$NON-NLS-1$
@@ -310,12 +311,11 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * @param vm
 	 *            path to the Java virtual machine or <code>null</code>
 	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * @throws LaunchException
 	 * @since 2.0
 	 */
 	public IStatus doLaunch(final String workspace, final File app, String cmd, String vmargs, String vm)
-			throws IOException, InterruptedException {
+			throws LaunchException {
 
 		List<String> args = buildCommandLine(workspace, cmd, vmargs, vm);
 
@@ -331,25 +331,29 @@ public class LauncherPlugin extends AbstractUIPlugin {
 		}
 
 		// Do some logging
-		StatusManager.getManager().handle(
-				new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID,
-						"Launching new Eclipse instance with \"" + sb.toString() + "\""), StatusManager.LOG); //$NON-NLS-1$ //$NON-NLS-2$
+		String message = MessageFormat.format("Launching new Eclipse instance with \"{0}\"", sb.toString()); //$NON-NLS-1$
+		StatusManager.getManager().handle(new Status(IStatus.INFO, LauncherPlugin.PLUGIN_ID, message),
+				StatusManager.LOG);
 
-		// Execute the command line
-		Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
-		if (p.waitFor() != 0) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			sb.setLength(0);
-			String in = null;
-			while ((in = br.readLine()) != null) {
-				sb.append(NEW_LINE);
-				sb.append(in);
+		try {
+			// Execute the command line
+			Process p = Runtime.getRuntime().exec(args.toArray(new String[args.size()]));
+			if (p.waitFor() != 0) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+				sb.setLength(0);
+				String in = null;
+				while ((in = br.readLine()) != null) {
+					sb.append(NEW_LINE);
+					sb.append(in);
+				}
+				br.close();
+				if (sb.length() > 0) {
+					return new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+							"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
+				}
 			}
-			br.close();
-			if (sb.length() > 0) {
-				return new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
-						"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
-			}
+		} catch (IOException | InterruptedException e) {
+			throw new LaunchException(e);
 		}
 		return Status.OK_STATUS;
 	}

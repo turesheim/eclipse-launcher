@@ -12,10 +12,9 @@
 	</parent>
 
 	<artifactId>no.resheim.eclipse.utils.launcher.tests</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
-
-	<name>Eclipse Utilities UI Tests</name>
+    <version>2.0.0-SNAPSHOT</version>
+	<name>Eclipse Utilities UI Launcher Tests</name>
 
 	<properties>
 		<local-site>file:/${basedir}/../no.resheim.eclipse.utils-site/target/site</local-site>
@@ -72,10 +71,23 @@
 					</includes>
 					<argLine>${ui.test.vmargs} ${tycho.testArgLine}</argLine>
 					<useUIHarness>true</useUIHarness>
-					<useUIThread>true</useUIThread>
+					<useUIThread>false</useUIThread>
 					<product>org.eclipse.sdk.ide</product>
 					<application>org.eclipse.ui.ide.workbench</application>
-				</configuration>
+				    <dependencies>
+				        <dependency>
+                            <type>eclipse-feature</type>
+				            <groupId>no.resheim.eclipse.utils</groupId>
+				            <artifactId>no.resheim.eclipse.utils.launcher</artifactId>
+				            <version>2.0.0</version>
+				        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.sdk.ide</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                    </dependencies>
+                </configuration>
 			</plugin>
 		</plugins>
 	</build>

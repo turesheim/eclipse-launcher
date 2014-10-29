@@ -270,7 +270,7 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 				Button okButton = getButton(Window.OK);
 				if (okButton != null && !okButton.isDisposed()) {
 					boolean nonWhitespaceFound = false;
-					String characters = getWorkspaceLocation();
+					String characters = workspaceCombo.getText();
 					for (int i = 0; !nonWhitespaceFound && i < characters.length(); i++) {
 						if (!Character.isWhitespace(characters.charAt(i))) {
 							nonWhitespaceFound = true;

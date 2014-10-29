@@ -63,8 +63,12 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 			final File application = LauncherPlugin.getDefault().getLauncherApplication();
 			if (application != null) {
 				BusyIndicator.showWhile(null, new Runnable() {
-					// FIXME Messy status handling
+
 					public void run() {
+						launch(event, application);
+					}
+
+					private void launch(final ExecutionEvent event, final File application) {
 						IStatus status = Status.OK_STATUS;
 						try {
 							final String workspace = event.getParameter(WORKSPACE_PARAMETER_ID);

@@ -3,19 +3,33 @@ package no.resheim.eclipse.utils.launcher.core;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
-import no.resheim.eclipse.utils.launcher.core.EclipseConfiguration;
-
+import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * @since 2.0
+ */
+@SuppressWarnings("nls")
 public class EclipseConfigurationTest {
 
-	private static final String ECLIPSE_INI = "eclipse.ini";
+	private InputStream eclipse_ini;
+
+	@Before
+	public void before() {
+		String root = "";
+		String property = System.getProperty("testResourceRoot");
+		if (null != property) {
+			root = property;
+		}
+		eclipse_ini = this.getClass().getResourceAsStream(root + "eclipse.ini");
+	}
 
 	@Test
 	public void testGetVmArguments() throws IOException {
-		EclipseConfiguration cr = new EclipseConfiguration(this.getClass().getResourceAsStream(ECLIPSE_INI));
+		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
 		assertEquals("-Dosgi.requiredJavaVersion=1.6", array[0]);
@@ -31,7 +45,7 @@ public class EclipseConfigurationTest {
 
 	@Test
 	public void testSetDebugParameters() throws IOException {
-		EclipseConfiguration cr = new EclipseConfiguration(this.getClass().getResourceAsStream(ECLIPSE_INI));
+		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		cr.setRemoteDebug(8000, true);
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
@@ -41,7 +55,7 @@ public class EclipseConfigurationTest {
 
 	@Test
 	public void testRemoveVMSetting() throws IOException {
-		EclipseConfiguration cr = new EclipseConfiguration(this.getClass().getResourceAsStream(ECLIPSE_INI));
+		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		cr.removeVmSetting("-Dorg.eclipse.swt.internal.carbon.smallFonts");
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
@@ -57,7 +71,7 @@ public class EclipseConfigurationTest {
 
 	@Test
 	public void testSetVmXmx() throws IOException {
-		EclipseConfiguration cr = new EclipseConfiguration(this.getClass().getResourceAsStream(ECLIPSE_INI));
+		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		cr.setVmXmx("1024m");
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
@@ -66,7 +80,7 @@ public class EclipseConfigurationTest {
 
 	@Test
 	public void testSetVmXms() throws IOException {
-		EclipseConfiguration cr = new EclipseConfiguration(this.getClass().getResourceAsStream(ECLIPSE_INI));
+		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		cr.setVmXms("1024m");
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
