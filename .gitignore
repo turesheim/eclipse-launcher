@@ -3,5 +3,5 @@ target
 */bin
 */target
 *~
-
+*.versionsBackup
 
