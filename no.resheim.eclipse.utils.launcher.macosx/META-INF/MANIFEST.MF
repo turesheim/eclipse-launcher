@@ -13,4 +13,3 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
 Export-Package: no.resheim.eclipse.utils.launcher.macosx,
  no.resheim.eclipse.utils.launcher.macosx.handlers;x-friends:="no.resheim.eclipse.utils.launcher.tests"
-Import-Package: org.junit;version="4.11.0"
