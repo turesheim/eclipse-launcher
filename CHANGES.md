@@ -1,6 +1,6 @@
 ##Changes
 
-###Version 1.4.0 (2014-11-01)
+###Version 1.4.0 (2014-11-13)
 * Various housekeeping: Set up Mylyn configuration for each project. Fixed broken test running from Tycho. Added Eclipse-SourceReferences in Manifest Headers. Set OS-filter in features.xml. Added license text etc.
 * Added "Advanced" menu entry in for the "Eclipse Launcher" which is now at version 2.0.0. This opens a dialog with additional options for opening a new instance of Eclipse.
   * Which JRE to use, a list of detected runtimes are displayed.
