@@ -8,7 +8,7 @@
 		<relativePath>../no.resheim.eclipse.utils-parent/pom.xml</relativePath>
 		<artifactId>no.resheim.eclipse.utils-parent</artifactId>
 		<groupId>no.resheim.eclipse.utils</groupId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.4.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>no.resheim.eclipse.utils.launcher.core</artifactId>
@@ -19,31 +19,33 @@
 		<tycho.scmUrl>scm:git:git://github.com/turesheim/eclipse-utilities.git</tycho.scmUrl>
 	</properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
-        <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>src-test</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>src-test/no/resheim/eclipse/utils/launcher/core</directory>
-            </testResource>
-        </testResources>
+        <testSourceDirectory>${project.basedir}/src-test</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho.version}</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <testResourceRoot>/</testResourceRoot>
-                    </systemPropertyVariables>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.17</version>
-                    </dependency>
-                </dependencies>
+                <version>2.12.4</version>
                 <executions>
                     <execution>
                         <id>test</id>
@@ -55,6 +57,20 @@
                         </configuration>
                         <goals>
                             <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <id>compiletests</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
                         </goals>
                     </execution>
                 </executions>

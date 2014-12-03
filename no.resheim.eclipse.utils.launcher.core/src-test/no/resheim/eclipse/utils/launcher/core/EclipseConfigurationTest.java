@@ -2,6 +2,7 @@ package no.resheim.eclipse.utils.launcher.core;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
@@ -15,16 +16,22 @@ import org.junit.Test;
 @SuppressWarnings("nls")
 public class EclipseConfigurationTest {
 
+	private final String input_string = "-startup\n"
+			+ "../../../plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar\n" + "--launcher.library\n"
+			+ "../../../plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.200.v20140603-1326\n"
+			+ "-product\n" + "org.eclipse.epp.package.java.product\n" + "--launcher.defaultAction\n" + "openFile\n"
+			+ "-showsplash\n" + "org.eclipse.platform\n" + "--launcher.XXMaxPermSize\n" + "256m\n"
+			+ "--launcher.defaultAction\n" + "openFile\n" + "--launcher.appendVmargs\n" + "-vmargs\n"
+			+ "-Dosgi.requiredJavaVersion=1.6\n" + "-XstartOnFirstThread\n"
+			+ "-Dorg.eclipse.swt.internal.carbon.smallFonts\n" + "-XX:MaxPermSize=256m\n" + "-Xms40m\n" + "-Xmx512m\n"
+			+ "-Xdock:icon=../Resources/Eclipse.icns\n" + "-XstartOnFirstThread\n"
+			+ "-Dorg.eclipse.swt.internal.carbon.smallFonts\n";
+
 	private InputStream eclipse_ini;
 
 	@Before
 	public void before() {
-		String root = "";
-		String property = System.getProperty("testResourceRoot");
-		if (null != property) {
-			root = property;
-		}
-		eclipse_ini = this.getClass().getResourceAsStream(root + "eclipse.ini");
+		eclipse_ini = new ByteArrayInputStream(input_string.getBytes());
 	}
 
 	@Test

@@ -8,7 +8,7 @@
 		<relativePath>../no.resheim.eclipse.utils-parent/pom.xml</relativePath>
 		<artifactId>no.resheim.eclipse.utils-parent</artifactId>
 		<groupId>no.resheim.eclipse.utils</groupId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.4.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>no.resheim.eclipse.utils.launcher.macosx</artifactId>
@@ -19,48 +19,65 @@
 		<tycho.scmUrl>scm:git:git://github.com/turesheim/eclipse-utilities.git</tycho.scmUrl>
 	</properties>
 
-	<!-- This bundle is a fragment which makes it hard to unit-test it's code.
-		In order to facilitate testing we use plain JUnit tests as supported by Maven. -->
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>src-test</testSourceDirectory>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <testSourceDirectory>${project.basedir}/src-test</testSourceDirectory>
         <testResources>
-            <testResource>
-                <directory>src-test/no/resheim/eclipse/utils/launcher/macosx</directory>
-            </testResource>
+            <testResource><directory>${project.basedir}/src-test</directory></testResource>
         </testResources>
         <plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <testResourceRoot>/</testResourceRoot>
-                    </systemPropertyVariables>
-                </configuration>
-                <dependencies>
-					<dependency>
-						<groupId>org.apache.maven.surefire</groupId>
-						<artifactId>surefire-junit47</artifactId>
-						<version>2.17</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>test</id>
-						<phase>test</phase>
-						<configuration>
-							<includes>
-								<include>**/*Test.java</include>
-							</includes>
-						</configuration>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test.java</include>
+                            </includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <id>compiletests</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
