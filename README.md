@@ -2,13 +2,14 @@
 
 This feature will add an **Open Workspace** menu item that will detect the application of the running Eclipse instance and start another in a fashion similar to the **Switch Workspace** command.
 
-<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/osx-launcher.jpg" width="493"/>
+<!-- Images are scaled to 80% -->
+<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/osx-launcher.jpg" width="482"/>
 
 Now with all these Eclipse instances up and running it is probably a good idea to be able to tell them apart. The workspace name can be set in **Preferences > General > Workspace** and it will show up in the icon badge. Otherwise the last segment of the workspace path will be used.
 
 Additionaly it is possible to use the **Advanced...** menu item that allowing you to specify launch options when opening a new workspace. Using this you can easily debug a new instance of the running IDE without creating a launch configuration.
 
-<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/Open_Workspace.png" width="510"/>
+<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/Open_Workspace.png" width="408"/>
 
 Note that OS X 10.6 or newer is required as this feature relies on the [open](http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/open.1.html) command's ability to pass on arguments.
 
