@@ -99,7 +99,7 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 						JRE vm = dialog.getJVm();
 						String cmd = System.getProperty(LauncherPlugin.PROP_COMMANDS);
 						// Signal that vm arguments will be overridden.
-						cmd = cmd + "--launcher.overrideVmargs"; //$NON-NLS-1$
+						cmd = cmd + " --launcher.overrideVmargs"; //$NON-NLS-1$
 						// Attempt to figure out the name of the Eclipse
 						// launcher and it's corresponding ".ini" file
 						String launcher = System.getProperty("eclipse.launcher"); //$NON-NLS-1$
@@ -108,6 +108,9 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 							EclipseConfiguration ec = new EclipseConfiguration(new FileInputStream(inifile));
 							if (dialog.isDisableSmallFonts()) {
 								ec.removeVmSetting("-Dorg.eclipse.swt.internal.carbon.smallFonts"); //$NON-NLS-1$
+							}
+							if (dialog.isClean()) {
+								cmd = cmd + " -clean"; //$NON-NLS-1$
 							}
 							ec.setVmXmx(dialog.getXmx());
 							ec.setVmXms(dialog.getXms());

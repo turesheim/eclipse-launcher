@@ -59,6 +59,8 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 
 	private boolean disableSmallFonts;
 
+	private boolean clean;
+
 	private Combo runtimeCombo;
 
 	/** The list of available Java Runtime Engines */
@@ -161,6 +163,8 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 		GridLayout layout = new GridLayout(2, false);
 		layout.horizontalSpacing = 0;
 		container.setLayout(layout);
+
+		// Button for disabling font size reduction
 		final Button button = new Button(container, SWT.CHECK);
 		button.setText(Messages.LaunchOptionsDialog_8);
 		button.addSelectionListener(new SelectionAdapter() {
@@ -175,6 +179,22 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 		Label label = new Label(container, SWT.NONE);
 		label.setText(Messages.LaunchOptionsDialog_9);
 		label.setFont(JFaceResources.getFontRegistry().getItalic("")); //$NON-NLS-1$
+
+		// Button for disabling font size reduction
+		final Button button2 = new Button(container, SWT.CHECK);
+		button2.setText("Clean OSGi and runtime caches");
+		button2.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				clean = button2.getSelection();
+			}
+
+		});
+		button.setSelection(false);
+		Label label2 = new Label(container, SWT.NONE);
+		label2.setText("-clean");
+		label2.setFont(JFaceResources.getFontRegistry().getItalic("")); //$NON-NLS-1$
 	}
 
 	protected Control createInterface(Composite parent) {
@@ -337,6 +357,13 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 
 	public boolean isDisableSmallFonts() {
 		return disableSmallFonts;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public boolean isClean() {
+		return clean;
 	}
 
 	private void populateWorkspaceList() {

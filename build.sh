@@ -1,6 +1,6 @@
 #!/bin/bash
 # Perform the actual build with unit tests
-mvn clean verify -Pskip-ui-tests -f no.resheim.eclipse.utils-parent 
+mvn clean install -Pskip-ui-tests -f no.resheim.eclipse.utils-parent 
 # Execute UI tests
 if [ $? -eq 0 ]; then
 	mvn verify -f no.resheim.eclipse.utils.launcher.tests
