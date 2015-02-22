@@ -1,0 +1,15 @@
+language: java
+sudo: false
+script: mvn clean verify -f no.resheim.eclipse.utils-parent/pom.xml
+jdk:
+- oraclejdk8
+cache:
+  directories:
+  - $HOME/.m2
+deploy:
+  provider: releases
+  api_key:
+    secure: B8c3qW9LC01YqsRAMtHc3S5fnhFxcTiRqoKIoLZJcFQi+nci21d7QIv9eMyUxupKDokfXjqW2yc1JNN7VU25U/rU8vbfIEEoH6TqWOGiwSL+dF718GM5UHdnM/2cbefo9WU/bBQzfNV+fR881y5auasAZns87oFNQ4PIyQ2xpwQ=
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/no.resheim.eclipse.utils-site/target/no.resheim.eclipse.utils-*.zip
+  on:
+    repo: turesheim/eclipse-utilities
