@@ -190,8 +190,6 @@
 		<module>../no.resheim.eclipse.utils.launcher.core</module>
 		<module>../no.resheim.eclipse.utils.launcher.macosx</module>
         <module>../no.resheim.eclipse.utils.launcher.tests</module>
-		<module>../no.resheim.eclipse.utils.quicklook-feature</module>
-		<module>../no.resheim.eclipse.utils.quicklook.macosx</module>
 		<module>../no.resheim.eclipse.utils-site</module>
 	</modules>
 
