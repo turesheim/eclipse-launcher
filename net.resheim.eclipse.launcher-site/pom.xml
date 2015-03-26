@@ -11,7 +11,27 @@
 	</parent>
 
 	<artifactId>net.resheim.eclipse.launcher-site</artifactId>
-	<packaging>eclipse-update-site</packaging>
 	<name>Eclipse Launcher p2 Repository</name>
-
+	<packaging>eclipse-repository</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<repositoryName>Eclipse Launcher</repositoryName>
+					<finalName>${project.groupId}-${unqualifiedVersion}.${buildQualifier}</finalName>
+					<additionalFileSets>
+						<fileSet>
+							<directory>${basedir}/resources</directory>
+							<includes>
+								<include>**/*.html</include>
+							</includes>
+						</fileSet>
+					</additionalFileSets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

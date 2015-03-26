@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/net.resheim.eclipse.launcher_3.0.0.qualifier.jar" id="net.resheim.eclipse.launcher" version="3.0.0.qualifier" os="macosx" ws="cocoa" arch="x86_64">
+      <category name="main"/>
+   </feature>
+   <category-def name="main" label="Eclipse Launcher for OS X">
+      <description>
+         A little utility for Mac OS X that adds a Open Workspace menu entry which when activated opens the selected workspace in a new Eclipse instance. In addition Eclipse instance icons get a badge with the workspace name.
+      </description>
+   </category-def>
+</site>
