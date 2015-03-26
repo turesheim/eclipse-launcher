@@ -2,7 +2,9 @@ package no.resheim.eclipse.utils.launcher.core;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
@@ -16,22 +18,12 @@ import org.junit.Test;
 @SuppressWarnings("nls")
 public class EclipseConfigurationTest {
 
-	private final String input_string = "-startup\n"
-			+ "../../../plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar\n" + "--launcher.library\n"
-			+ "../../../plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.200.v20140603-1326\n"
-			+ "-product\n" + "org.eclipse.epp.package.java.product\n" + "--launcher.defaultAction\n" + "openFile\n"
-			+ "-showsplash\n" + "org.eclipse.platform\n" + "--launcher.XXMaxPermSize\n" + "256m\n"
-			+ "--launcher.defaultAction\n" + "openFile\n" + "--launcher.appendVmargs\n" + "-vmargs\n"
-			+ "-Dosgi.requiredJavaVersion=1.6\n" + "-XstartOnFirstThread\n"
-			+ "-Dorg.eclipse.swt.internal.carbon.smallFonts\n" + "-XX:MaxPermSize=256m\n" + "-Xms40m\n" + "-Xmx512m\n"
-			+ "-Xdock:icon=../Resources/Eclipse.icns\n" + "-XstartOnFirstThread\n"
-			+ "-Dorg.eclipse.swt.internal.carbon.smallFonts\n";
-
 	private InputStream eclipse_ini;
 
 	@Before
-	public void before() {
-		eclipse_ini = new ByteArrayInputStream(input_string.getBytes());
+	public void before() throws FileNotFoundException {
+		File file = new File("src-test/resources/eclipse44-macosx.ini");
+		eclipse_ini = new FileInputStream(file);
 	}
 
 	@Test
@@ -39,13 +31,13 @@ public class EclipseConfigurationTest {
 		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
-		assertEquals("-Dosgi.requiredJavaVersion=1.6", array[0]);
-		assertEquals("-XstartOnFirstThread", array[1]);
-		assertEquals("-Dorg.eclipse.swt.internal.carbon.smallFonts", array[2]);
-		assertEquals("-XX:MaxPermSize=256m", array[3]);
-		assertEquals("-Xms40m", array[4]);
-		assertEquals("-Xmx512m", array[5]);
-		assertEquals("-Xdock:icon=../Resources/Eclipse.icns", array[6]);
+		assertEquals("-Dorg.eclipse.swt.internal.carbon.smallFonts", array[0]);
+		assertEquals("-Xdock:icon=../Resources/Eclipse.icns", array[1]);
+		assertEquals("-Dosgi.requiredJavaVersion=1.7", array[2]);
+		assertEquals("-XstartOnFirstThread", array[3]);
+		assertEquals("-XX:MaxPermSize=256m", array[4]);
+		assertEquals("-Xms40m", array[5]);
+		assertEquals("-Xmx512m", array[6]);
 		// Last two items should have been removed (no duplicates allowed).
 		assertEquals(7, vmArgs.size());
 	}
@@ -60,18 +52,24 @@ public class EclipseConfigurationTest {
 		assertEquals("-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y", array[8]);
 	}
 
+	/**
+	 * Removes the smallFonts option and verifies that the ini-file is still in
+	 * working order.
+	 *
+	 * @throws IOException
+	 */
 	@Test
 	public void testRemoveVMSetting() throws IOException {
 		EclipseConfiguration cr = new EclipseConfiguration(eclipse_ini);
 		cr.removeVmSetting("-Dorg.eclipse.swt.internal.carbon.smallFonts");
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
-		assertEquals("-Dosgi.requiredJavaVersion=1.6", array[0]);
-		assertEquals("-XstartOnFirstThread", array[1]);
-		assertEquals("-XX:MaxPermSize=256m", array[2]);
-		assertEquals("-Xms40m", array[3]);
-		assertEquals("-Xmx512m", array[4]);
-		assertEquals("-Xdock:icon=../Resources/Eclipse.icns", array[5]);
+		assertEquals("-Xdock:icon=../Resources/Eclipse.icns", array[0]);
+		assertEquals("-Dosgi.requiredJavaVersion=1.7", array[1]);
+		assertEquals("-XstartOnFirstThread", array[2]);
+		assertEquals("-XX:MaxPermSize=256m", array[3]);
+		assertEquals("-Xms40m", array[4]);
+		assertEquals("-Xmx512m", array[5]);
 		// Last two items should have been removed (no duplicates allowed).
 		assertEquals(6, vmArgs.size());
 	}
@@ -82,7 +80,7 @@ public class EclipseConfigurationTest {
 		cr.setVmXmx("1024m");
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
-		assertEquals("-Xmx1024m", array[5]);
+		assertEquals("-Xmx1024m", array[6]);
 	}
 
 	@Test
@@ -91,6 +89,6 @@ public class EclipseConfigurationTest {
 		cr.setVmXms("1024m");
 		Set<String> vmArgs = cr.getVmArgs();
 		String[] array = vmArgs.toArray(new String[0]);
-		assertEquals("-Xms1024m", array[4]);
+		assertEquals("-Xms1024m", array[5]);
 	}
 }

@@ -21,12 +21,16 @@ import java.util.Set;
 /**
  * This type is used to read an Eclipse configuration file (eclipse.ini) and add
  * to or modify settings found therein. This can be used when creating a set of
- * command line arguments for starting Eclipse.
+ * command line arguments for starting Eclipse. Typically the ini-file is
+ * loaded, modified and the final result used as command line arguments. This
+ * type only as API for modifying certain parts of the <i>eclipse.ini</i>
+ * configuration.
  *
  * @since 2.0
  */
 public class EclipseConfiguration {
 
+	/** List of virtual machine start-up arguments */
 	private Set<String> vmargs;
 
 	/**
