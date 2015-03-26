@@ -1,11 +1,11 @@
 language: java
 sudo: false
-script: mvn clean verify -f net.resheim.eclipse.launcher-parent/pom.xml
 jdk:
 - oraclejdk8
 cache:
   directories:
   - $HOME/.m2
+script: mvn clean verify -f net.resheim.eclipse.launcher-parent/pom.xml
 deploy:
   provider: releases
   api_key:
