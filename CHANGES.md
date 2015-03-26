@@ -1,5 +1,11 @@
 ##Changes
 
+###Version 3.0.0 (2015-xx-xx)
+* Spring cleaning:
+  * Removed the OS X Quick Look feature that was introduced in 1.3.0. It was not very popular and to put it frankly; not very useful and should never had been added to this project.
+  * Renamed all bundles from "no.resheim.eclipse.utils.*" to "net.resheim.eclipse.launcher" version numbering will now reflect the version of the launcher feature, Hence the jump from 1.4.0 to 3.0.0.
+  * Travis-CI infrastructure is set up for the project. This enables continous building and makes it easier for contributors. 
+
 ###Version 1.4.0 (2014-11-13)
 * Various housekeeping: Set up Mylyn configuration for each project. Fixed broken test running from Tycho. Added Eclipse-SourceReferences in Manifest Headers. Set OS-filter in features.xml. Added license text etc.
 * Added "Advanced" menu entry in for the "Eclipse Launcher" which is now at version 2.0.0. This opens a dialog with additional options for opening a new instance of Eclipse.

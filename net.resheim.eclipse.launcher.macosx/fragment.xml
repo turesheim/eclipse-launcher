@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="net.resheim.eclipse.launcher.macosx.handlers.OpenWorkspaceHandler"
+            commandId="no.resheim.eclipse.launcherutil.commands.newInstance">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            class="net.resheim.eclipse.launcher.macosx.handlers.OpenWorkspaceMenu"
+            locationURI="menu:file?before=org.eclipse.ui.file.restartWorkbench">
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="no.resheim.eclipse.launcherutil.commands.newInstance"
+            name="%command.name">
+         <commandParameter
+               id="no.resheim.eclipse.launcherutil.workspace"
+               name="%commandParameter.name"
+               optional="true">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="net.resheim.eclipse.launcher.core.workspace">
+      <decorator
+            class="net.resheim.eclipse.launcher.macosx.WorkspaceDecorator">
+         decorator body text
+      </decorator>
+   </extension>
+
+</fragment>

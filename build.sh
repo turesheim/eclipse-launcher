@@ -1,11 +1,7 @@
 #!/bin/bash
 # Perform the actual build with unit tests
-mvn clean install -Pskip-ui-tests -f no.resheim.eclipse.utils-parent 
+mvn clean install -Pskip-ui-tests -f net.resheim.eclipse.launcher-parent 
 # Execute UI tests
 if [ $? -eq 0 ]; then
-	mvn verify -f no.resheim.eclipse.utils.launcher.tests
-fi
-# Run SonarQube analysis
-if [ $? -eq 0 ]; then
-	mvn sonar:sonar -Psonar -f no.resheim.eclipse.utils-parent
+	mvn verify -f net.resheim.eclipse.launcher.tests
 fi
