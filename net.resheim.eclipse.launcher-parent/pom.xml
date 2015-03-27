@@ -37,8 +37,8 @@
 	</licenses>
 
 	<properties>
-		<tycho.version>0.21.0</tycho.version>
-		<tycho-extras-version>0.21.0</tycho-extras-version>
+		<tycho.version>0.22.0</tycho.version>
+		<tycho-extras-version>0.22.0</tycho-extras-version>
 		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
 		<eclipse-site>http://download.eclipse.org/releases/luna/</eclipse-site>
 		<swtbot-site>http://download.eclipse.org/technology/swtbot/releases/2.2.1/</swtbot-site>
@@ -107,28 +107,6 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<environments>
-					<!--
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-                    -->
 						<environment>
 							<os>macosx</os>
 							<ws>cocoa</ws>
