@@ -1,15 +1,20 @@
 language: java
 sudo: false
+script: mvn clean verify -f net.resheim.eclipse.launcher-parent/pom.xml
 jdk:
 - oraclejdk8
 cache:
   directories:
   - $HOME/.m2
-script: mvn clean verify -f net.resheim.eclipse.launcher-parent/pom.xml
 deploy:
   provider: releases
+  skip_cleanup: true
   api_key:
     secure: B8c3qW9LC01YqsRAMtHc3S5fnhFxcTiRqoKIoLZJcFQi+nci21d7QIv9eMyUxupKDokfXjqW2yc1JNN7VU25U/rU8vbfIEEoH6TqWOGiwSL+dF718GM5UHdnM/2cbefo9WU/bBQzfNV+fR881y5auasAZns87oFNQ4PIyQ2xpwQ=
-  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/no.resheim.eclipse.utils-site/target/no.resheim.eclipse.utils-*.zip
+  file_glob: true
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/net.resheim.eclipse.launcher-site/target/net.resheim.eclipse.launcher-*.zip
   on:
     repo: turesheim/eclipse-utilities
+    tags: true
+    all_branches: true
+    
