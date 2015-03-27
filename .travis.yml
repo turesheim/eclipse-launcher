@@ -2,10 +2,10 @@ language: java
 sudo: false
 script: mvn clean verify -f net.resheim.eclipse.launcher-parent/pom.xml
 jdk:
-- oraclejdk8
+  - oraclejdk8
 cache:
   directories:
-  - $HOME/.m2
+    - $HOME/.m2
 deploy:
   provider: releases
   skip_cleanup: true
