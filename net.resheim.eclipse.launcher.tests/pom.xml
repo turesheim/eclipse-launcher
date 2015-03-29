@@ -17,7 +17,6 @@
 	<name>Eclipse Launcher UI Tests</name>
 
 	<properties>
-		<local-site>file:/${basedir}/../net.resheim.eclipse.launcher-site/target/site</local-site>
 		<uitest.vmparams>-Dorg.eclipse.swtbot.search.timeout=10000 -Xmx1024m -XX:MaxPermSize=384m</uitest.vmparams>
 	</properties>
 
@@ -78,15 +77,15 @@
 				        <dependency>
                             <type>eclipse-feature</type>
 				            <groupId>net.resheim.eclipse.launcher</groupId>
-				            <artifactId>net.resheim.eclipse.launcher</artifactId>
-				            <version>3.0.0</version>
+				            <artifactId>net.resheim.eclipse.launcher</artifactId>				            
+				            <version>0.0.0</version>
 				        </dependency>
                         <dependency>
                             <type>p2-installable-unit</type>
                             <artifactId>org.eclipse.sdk.ide</artifactId>
-                            <version>4.4.0</version>
-                        </dependency>
-                    </dependencies>
+                            <version>0.0.0</version>
+                        </dependency>                        
+                    </dependencies>                    
                 </configuration>
 			</plugin>
 		</plugins>

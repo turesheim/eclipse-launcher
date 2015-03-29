@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="Eclipse Utilities for Luna (4.4)" sequenceNumber="1427487159">
+<target name="Eclipse Launcher Target Platform" sequenceNumber="1427657445">
   <locations>
-    <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.sdk.ide" version="4.4.2.M20150204-1700"/>
-      <unit id="org.eclipse.rcp.sdk.id" version="4.4.2.M20150204-1700"/>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.equinox.p2.sdk.feature.group" version="3.9.1.v20150129-0838"/>
+      <unit id="org.eclipse.sdk.feature.group" version="4.4.2.v20150204-1700"/>
+      <unit id="org.eclipse.pde.core" version="3.10.2.v20150127-1015"/>
       <unit id="org.eclipse.emf.ecore" version="2.10.2.v20150123-0348"/>
       <unit id="org.eclipse.emf.ecore.xmi" version="2.10.2.v20150123-0348"/>
       <unit id="org.eclipse.emf.ecore.change" version="2.10.0.v20150123-0348"/>
@@ -14,13 +15,17 @@
       <unit id="org.apache.commons.collections" version="3.2.0.v2013030210310"/>
       <repository location="http://download.eclipse.org/releases/luna/"/>
     </location>
-    <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.swtbot.forms.source.feature.group" version="2.2.1.201402241301"/>
       <unit id="org.eclipse.swtbot.eclipse.source.feature.group" version="2.2.1.201402241301"/>
       <unit id="org.eclipse.swtbot.source.feature.group" version="2.2.1.201402241301"/>
       <unit id="org.hamcrest.library" version="1.3.0.v201305281000"/>
       <unit id="org.hamcrest.core" version="1.3.0.v201303031735"/>
       <repository location="http://download.eclipse.org/technology/swtbot/releases/2.2.1/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.swt.tools" version="3.103.0.201312111746"/>
+      <repository location="http://www.eclipse.org/swt/updates/4.4"/>
     </location>
   </locations>
 </target>

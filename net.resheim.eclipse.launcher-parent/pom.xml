@@ -38,63 +38,23 @@
 
 	<properties>
 		<tycho.version>0.22.0</tycho.version>
-		<tycho-extras-version>0.22.0</tycho-extras-version>
-		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
-		<eclipse-site>http://download.eclipse.org/releases/luna/</eclipse-site>
-		<swtbot-site>http://download.eclipse.org/technology/swtbot/releases/2.2.1/</swtbot-site>
-		<!-- Sonar + JaCoCo -->
-		<sonar.language>java</sonar.language>
-		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-		<sonar.junit.reportsPath>${project.basedir}/target/surefire-reports/</sonar.junit.reportsPath>
 	</properties>
-
-	<profiles>
-		<!-- Connect to the locally running MySQL/MariaDB database for storing results  -->
-		<profile>
-			<id>sonar</id>
-			<properties>
-				<sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true</sonar.jdbc.url>
-				<sonar.jdbc.username>sonar</sonar.jdbc.username>
-				<sonar.jdbc.password>sonar</sonar.jdbc.password>
-			</properties>
-		</profile>
-	</profiles>
-
-    <!-- The compile/test time target platform -->
-	<repositories>
-		<repository>
-			<id>eclipse-luna</id>
-			<layout>p2</layout>
-			<url>${eclipse-site}</url>
-		</repository>
-		<repository>
-			<id>eclipse-swtbot-2.2.1</id>
-			<layout>p2</layout>
-			<url>${swtbot-site}</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>sonatype-snapshots</id>
-			<url>https://repository.sonatype.org/content/repositories/snapshots/</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>maven.eclipse.org</id>
-			<url>http://maven.eclipse.org/nexus/content/repositories/milestone-luna/</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 
 	<organization>
 		<name>Torkild U. Resheim</name>
-		<url>http://torkild.resheim.no/</url>
+		<url>http://resheim.net/</url>
 	</organization>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-compiler-plugin</artifactId>
+			    <version>${tycho.version}</version>
+			    <configuration>
+			    <useProjectSettings>true</useProjectSettings>
+			  </configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
@@ -106,12 +66,21 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<target>
+						<artifact>
+							<groupId>net.resheim.eclipse.launcher</groupId>
+							<artifactId>net.resheim.eclipse.launcher-parent</artifactId>
+							<version>3.0.0-SNAPSHOT</version>
+							<classifier>default</classifier>
+						</artifact>
+					</target>
+					<resolver>p2</resolver>
 					<environments>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>x86_64</arch>
+                        </environment>
 					</environments>
                     <pomDependencies>consider</pomDependencies>
 				</configuration>
@@ -135,30 +104,9 @@
 					<dependency>
 						<groupId>org.eclipse.tycho.extras</groupId>
 						<artifactId>tycho-sourceref-jgit</artifactId>
-						<version>${tycho-extras-version}</version>
+						<version>${tycho.version}</version>
 					</dependency>
 				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.2.201409121644</version>
-				<executions>
-					<execution>
-						<id>prepare-integration-tests</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<include>no.*</include>
-							<include>org.junit.*</include>
-							<!-- Where to put jacoco coverage report -->
-							<destFile>${sonar.jacoco.reportPath}</destFile>
-							<append>true</append>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -167,8 +115,8 @@
 		<module>../net.resheim.eclipse.launcher-feature</module>
 		<module>../net.resheim.eclipse.launcher.core</module>
 		<module>../net.resheim.eclipse.launcher.macosx</module>
-        <module>../net.resheim.eclipse.launcher.tests</module>
 		<module>../net.resheim.eclipse.launcher-site</module>
+        <module>../net.resheim.eclipse.launcher.tests</module>
 	</modules>
 
 </project>

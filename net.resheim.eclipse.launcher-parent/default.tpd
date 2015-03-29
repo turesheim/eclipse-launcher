@@ -1,15 +1,14 @@
-target "Eclipse Utilities for Luna (4.4)"
-with source, allEnvironments
+target "Eclipse Launcher Target Platform" with source, requirements
 
 // Base dependencies
 location "http://download.eclipse.org/releases/luna/" {
-	org.eclipse.sdk.ide
-	org.eclipse.rcp.sdk.id
+    org.eclipse.equinox.p2.sdk.feature.group
+    org.eclipse.sdk.feature.group
+    org.eclipse.pde.core
 	org.eclipse.emf.ecore
     org.eclipse.emf.ecore.xmi
     org.eclipse.emf.ecore.change
     org.eclipse.emf.common
-    // For SWTBot
     org.apache.log4j
     org.apache.commons.collections
 }
@@ -21,4 +20,9 @@ location "http://download.eclipse.org/technology/swtbot/releases/2.2.1/" {
     org.eclipse.swtbot.source.feature.group
     org.hamcrest.library
     org.hamcrest.core
+}
+
+// SWT Debugging
+location "http://www.eclipse.org/swt/updates/4.4" {
+    org.eclipse.swt.tools
 }
