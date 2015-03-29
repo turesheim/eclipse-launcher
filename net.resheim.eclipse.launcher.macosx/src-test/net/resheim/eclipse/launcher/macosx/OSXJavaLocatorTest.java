@@ -1,7 +1,6 @@
 package net.resheim.eclipse.launcher.macosx;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -12,72 +11,42 @@ import javax.xml.parsers.SAXParserFactory;
 import org.junit.Test;
 
 import net.resheim.eclipse.launcher.core.JRE;
-import net.resheim.eclipse.launcher.macosx.OSXJavaLocator;
 
 /**
  * @since 2.0
  */
 @SuppressWarnings("nls")
 public class OSXJavaLocatorTest {
-	
-	private final String java_home_x = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-			"<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" + 
-			"<plist version=\"1.0\">\n" + 
-			"<array>\n" + 
-			"	<dict>\n" + 
-			"		<key>JVMArch</key>\n" + 
-			"		<string>x86_64</string>\n" + 
-			"		<key>JVMBlacklisted</key>\n" + 
-			"		<false/>\n" + 
-			"		<key>JVMBundleID</key>\n" + 
-			"		<string>com.oracle.java.8u20.jdk</string>\n" + 
-			"		<key>JVMEnabled</key>\n" + 
-			"		<true/>\n" + 
-			"		<key>JVMHomePath</key>\n" + 
-			"		<string>/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home</string>\n" + 
-			"		<key>JVMIsBuiltIn</key>\n" + 
-			"		<false/>\n" + 
-			"		<key>JVMName</key>\n" + 
-			"		<string>Java SE 8</string>\n" + 
-			"		<key>JVMPlatformVersion</key>\n" + 
-			"		<string>1.8</string>\n" + 
-			"		<key>JVMVendor</key>\n" + 
-			"		<string>Oracle Corporation</string>\n" + 
-			"		<key>JVMVersion</key>\n" + 
-			"		<string>1.8.0_20</string>\n" + 
-			"	</dict>\n" + 
-			"	<dict>\n" + 
-			"		<key>JVMArch</key>\n" + 
-			"		<string>x86_64</string>\n" + 
-			"		<key>JVMBlacklisted</key>\n" + 
-			"		<false/>\n" + 
-			"		<key>JVMBundleID</key>\n" + 
-			"		<string>com.oracle.java.7u55.jdk</string>\n" + 
-			"		<key>JVMEnabled</key>\n" + 
-			"		<true/>\n" + 
-			"		<key>JVMHomePath</key>\n" + 
-			"		<string>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home</string>\n" + 
-			"		<key>JVMIsBuiltIn</key>\n" + 
-			"		<false/>\n" + 
-			"		<key>JVMName</key>\n" + 
-			"		<string>Java SE 7</string>\n" + 
-			"		<key>JVMPlatformVersion</key>\n" + 
-			"		<string>1.7</string>\n" + 
-			"		<key>JVMVendor</key>\n" + 
-			"		<string>Oracle Corporation</string>\n" + 
-			"		<key>JVMVersion</key>\n" + 
-			"		<string>1.7.0_55</string>\n" + 
-			"	</dict>\n" + 
-			"</array>\n" + 
-			"</plist>\n" + 
-			"";
 
-	@Test
-	public void testGetRuntimes() {
-		OSXJavaLocator locator = new OSXJavaLocator();
-		List<JRE> runtimes = locator.getRuntimes();
-		assertTrue(runtimes.size() > 0);
-	}
+	private final String java_home_x = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			+ "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n"
+			+ "<plist version=\"1.0\">\n" + "<array>\n" + "	<dict>\n" + "		<key>JVMArch</key>\n"
+			+ "		<string>x86_64</string>\n" + "		<key>JVMBlacklisted</key>\n" + "		<false/>\n"
+			+ "		<key>JVMBundleID</key>\n" + "		<string>com.oracle.java.8u20.jdk</string>\n"
+			+ "		<key>JVMEnabled</key>\n" + "		<true/>\n" + "		<key>JVMHomePath</key>\n"
+			+ "		<string>/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home</string>\n"
+			+ "		<key>JVMIsBuiltIn</key>\n" + "		<false/>\n" + "		<key>JVMName</key>\n"
+			+ "		<string>Java SE 8</string>\n" + "		<key>JVMPlatformVersion</key>\n"
+			+ "		<string>1.8</string>\n" + "		<key>JVMVendor</key>\n"
+			+ "		<string>Oracle Corporation</string>\n" + "		<key>JVMVersion</key>\n"
+			+ "		<string>1.8.0_20</string>\n" + "	</dict>\n" + "	<dict>\n" + "		<key>JVMArch</key>\n"
+			+ "		<string>x86_64</string>\n" + "		<key>JVMBlacklisted</key>\n" + "		<false/>\n"
+			+ "		<key>JVMBundleID</key>\n" + "		<string>com.oracle.java.7u55.jdk</string>\n"
+			+ "		<key>JVMEnabled</key>\n" + "		<true/>\n" + "		<key>JVMHomePath</key>\n"
+			+ "		<string>/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home</string>\n"
+			+ "		<key>JVMIsBuiltIn</key>\n" + "		<false/>\n" + "		<key>JVMName</key>\n"
+			+ "		<string>Java SE 7</string>\n" + "		<key>JVMPlatformVersion</key>\n"
+			+ "		<string>1.7</string>\n" + "		<key>JVMVendor</key>\n"
+			+ "		<string>Oracle Corporation</string>\n" + "		<key>JVMVersion</key>\n"
+			+ "		<string>1.7.0_55</string>\n" + "	</dict>\n" + "</array>\n" + "</plist>\n" + "";
+
+	// XXX: Bad test, this will only work on OSX, mock it.
+	// @Test
+	// public void testGetRuntimes() {
+	// OSXJavaLocator locator = new OSXJavaLocator();
+	// List<JRE> runtimes = locator.getRuntimes();
+	// assertTrue(runtimes.size() > 0);
+	// }
 
 	@Test
 	public void testParser() throws Exception {
