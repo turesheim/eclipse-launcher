@@ -1,3 +1,5 @@
+os:
+  - osx
 language: java
 sudo: false
 script: mvn clean verify -f net.resheim.eclipse.launcher-parent/pom.xml
