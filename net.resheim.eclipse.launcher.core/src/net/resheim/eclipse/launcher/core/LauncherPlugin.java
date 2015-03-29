@@ -62,7 +62,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	/** Argument key for specifying JVM arguments */
 	private static final String CMD_VMARGS = "-vmargs"; //$NON-NLS-1$
 
-	private static final String EXTENSION_POINT_ID = "no.resheim.eclipse.utils.launcher.core.workspace"; //$NON-NLS-1$
+	private static final String EXTENSION_POINT_ID = "net.resheim.eclipse.launcher.core.workspace"; //$NON-NLS-1$
 
 	/** System new line character */
 	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
@@ -71,7 +71,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	private static LauncherPlugin plugin;
 
 	/** The plug-in ID */
-	public static final String PLUGIN_ID = "no.resheim.eclipse.utils.launcher.core"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "net.resheim.eclipse.launcher.core"; //$NON-NLS-1$
 
 	/**
 	 * @since 2.0

@@ -17,7 +17,7 @@ import org.eclipse.osgi.util.NLS;
  * @since 2.0
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "no.resheim.eclipse.utils.launcher.macosx.handlers.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "net.resheim.eclipse.launcher.macosx.handlers.messages"; //$NON-NLS-1$
 
 	public static String OpenWorkspaceMenu_Advanced;
 

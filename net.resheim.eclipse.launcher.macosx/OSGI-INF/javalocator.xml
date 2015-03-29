@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" name="JavaLocator">
-   <implementation class="no.resheim.eclipse.utils.launcher.macosx.OSXJavaLocator"/>
+   <implementation class="net.resheim.eclipse.launcher.macosx.OSXJavaLocator"/>
    <service>
-      <provide interface="no.resheim.eclipse.utils.launcher.core.IJavaLocatorService"/>
+      <provide interface="net.resheim.eclipse.launcher.core.IJavaLocatorService"/>
    </service>
    <property name="service.ranking" type="Integer" value="1"/>
 </scr:component>

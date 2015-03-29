@@ -12,4 +12,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
 Export-Package: net.resheim.eclipse.launcher.macosx,
- net.resheim.eclipse.launcher.macosx.handlers;x-friends:="no.resheim.eclipse.utils.launcher.tests"
+ net.resheim.eclipse.launcher.macosx.handlers;x-friends:="net.resheim.eclipse.launcher.tests"

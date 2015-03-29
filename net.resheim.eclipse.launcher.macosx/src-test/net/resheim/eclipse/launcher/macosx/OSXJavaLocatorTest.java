@@ -1,4 +1,4 @@
-package no.resheim.eclipse.utils.launcher.macosx;
+package net.resheim.eclipse.launcher.macosx;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

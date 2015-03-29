@@ -77,14 +77,14 @@
 				    <dependencies>
 				        <dependency>
                             <type>eclipse-feature</type>
-				            <groupId>no.resheim.eclipse.utils</groupId>
+				            <groupId>net.resheim.eclipse.launcher</groupId>
 				            <artifactId>net.resheim.eclipse.launcher</artifactId>
 				            <version>3.0.0</version>
 				        </dependency>
                         <dependency>
                             <type>p2-installable-unit</type>
                             <artifactId>org.eclipse.sdk.ide</artifactId>
-                            <version>0.0.0</version>
+                            <version>4.4.0</version>
                         </dependency>
                     </dependencies>
                 </configuration>
