@@ -4,6 +4,7 @@
       label="%featureName"
       version="3.0.0.qualifier"
       provider-name="%providerName"
+      plugin="net.resheim.eclipse.launcher.core"
       os="macosx"
       ws="cocoa"
       arch="x86_64">
