@@ -20,6 +20,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "net.resheim.eclipse.launcher.macosx.messages"; //$NON-NLS-1$
 	public static String LaunchOptionsDialog_0;
 	public static String LaunchOptionsDialog_1;
+	public static String LaunchOptionsDialog_10;
 	public static String LaunchOptionsDialog_11;
 	public static String LaunchOptionsDialog_13;
 	public static String LaunchOptionsDialog_15;

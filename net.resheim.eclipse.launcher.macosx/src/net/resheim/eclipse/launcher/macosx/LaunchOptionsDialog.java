@@ -182,7 +182,7 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 
 		// Button for disabling font size reduction
 		final Button button2 = new Button(container, SWT.CHECK);
-		button2.setText("Clean OSGi and runtime caches");
+		button2.setText(Messages.LaunchOptionsDialog_10);
 		button2.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -193,7 +193,7 @@ public class LaunchOptionsDialog extends TitleAreaDialog {
 		});
 		button.setSelection(false);
 		Label label2 = new Label(container, SWT.NONE);
-		label2.setText("-clean");
+		label2.setText("-clean"); //$NON-NLS-1$
 		label2.setFont(JFaceResources.getFontRegistry().getItalic("")); //$NON-NLS-1$
 	}
 
