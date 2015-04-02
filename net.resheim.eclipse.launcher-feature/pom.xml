@@ -6,7 +6,7 @@
 
 	<parent>
 		<artifactId>net.resheim.eclipse.launcher-parent</artifactId>
-		<relativePath>../net.resheim.eclipse.launcher-parent/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 		<groupId>net.resheim.eclipse.launcher</groupId>
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>

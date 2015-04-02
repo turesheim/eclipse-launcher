@@ -112,11 +112,11 @@
 	</build>
 
 	<modules>
-		<module>../net.resheim.eclipse.launcher-feature</module>
-		<module>../net.resheim.eclipse.launcher.core</module>
-		<module>../net.resheim.eclipse.launcher.macosx</module>
-		<module>../net.resheim.eclipse.launcher-site</module>
-        <module>../net.resheim.eclipse.launcher.tests</module>
+		<module>net.resheim.eclipse.launcher-feature</module>
+		<module>net.resheim.eclipse.launcher.core</module>
+		<module>net.resheim.eclipse.launcher.macosx</module>
+		<module>net.resheim.eclipse.launcher-site</module>
+        <module>net.resheim.eclipse.launcher.tests</module>
 	</modules>
 
 </project>
