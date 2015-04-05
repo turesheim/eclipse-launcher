@@ -117,7 +117,7 @@ public class LaunchOptionsDialogTest {
 		gc.setAdvanced(true);
 		gc.setAntialias(SWT.ON);
 		gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-		gc.setAlpha(0xff / radius);
+		gc.setAlpha(0x8f / radius);
 		for (int i = 0; i < radius; i++) {
 			Rectangle shadowBounds = new Rectangle(bounds.x + i, bounds.y + i, bounds.width - (i * 2),
 					bounds.height - (i * 2));
