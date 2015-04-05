@@ -9,9 +9,7 @@ Now with all these Eclipse instances up and running it is probably a good idea t
 
 Additionaly it is possible to use the **Advanced...** menu item that allowing you to specify launch options when opening a new workspace. Using this you can easily debug a new instance of the running IDE without creating a launch configuration.
 
-<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/Open_Workspace.png" width="66%" style="-webkit-box-shadow: 0px 0px 8px 1px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 8px 1px rgba(0,0,0,0.75);
-box-shadow: 0px 0px 8px 1px rgba(0,0,0,0.75);"/>
+<img src="https://raw.github.com/turesheim/eclipse-utilities/master/images/Open_Workspace.png" width="400px"/>
 
 Note that OS X 10.6 or newer is required as this feature relies on the [open](http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/open.1.html) command's ability to pass on arguments.
 
