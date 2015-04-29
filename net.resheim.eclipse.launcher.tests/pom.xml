@@ -13,7 +13,6 @@
 
 	<artifactId>net.resheim.eclipse.launcher.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-	<version>3.0.0-SNAPSHOT</version>
 	<name>Eclipse Launcher UI Tests</name>
 
 	<properties>
