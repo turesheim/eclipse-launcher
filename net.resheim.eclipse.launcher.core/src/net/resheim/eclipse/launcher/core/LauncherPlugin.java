@@ -91,24 +91,25 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	/**
 	 * Create and return a string with command line options for starting
 	 * Eclipse. If the workspace to use already has been specified in
-	 * <i>commands</i> this property will be overridden using the new workspace.
-	 * A similar replacement is done for the virtual machine path.
+	 * <i>workspace</i> this property will be overridden using the new
+	 * workspace. A similar replacement is done for the virtual machine path,
+	 * <i>vm</i>.
 	 * <p>
 	 * Similar to {@link OpenWorkspaceAction}
 	 * </p>
 	 *
 	 * @param workspace
-	 *            the directory to use as the new workspace or null
+	 *            the directory to use as workspace or <code>null</code>
 	 * @param commands
 	 *            the system property "eclipse.commands"
 	 * @param vmargs
 	 *            the system property "eclipse.vmargs"
 	 * @param vm
-	 *            path to the Java virtual machine or null
-	 * @return a string of command line options or null on error
+	 *            path to the Java virtual machine or <code>null</code>
+	 * @return a string of command line options or <code>null</code> on error
 	 * @since 2.0
 	 */
-	static List<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
+	public static List<String> buildCommandLine(String workspace, String commands, String vmargs, String vm) {
 		List<String> arguments = new ArrayList<String>();
 		// Handle the command string
 		String[] argStrings = commands.split("\\n"); //$NON-NLS-1$
@@ -186,30 +187,23 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Launches a new Eclipse instance using
+	 * Launches a new Eclipse instance.
 	 *
 	 * @param workspace
 	 *            path to the workspace
-	 * @param app
+	 * @param application
 	 *            the eclipse application executable
-	 * @param cmd
-	 *            contents of the system property "eclipse.commands"
-	 * @param vmargs
-	 *            contents of the system property "eclipse.vmargs"
-	 * @param vm
-	 *            path to the Java virtual machine or <code>null</code>
-	 * @return
+	 * @param args
+	 *            command line arguments
+	 * @return a status code
 	 * @throws LaunchException
 	 * @since 2.0
 	 */
-	public IStatus doLaunch(final String workspace, final File app, String cmd, String vmargs, String vm)
-			throws LaunchException {
-
-		List<String> args = buildCommandLine(workspace, cmd, vmargs, vm);
+	public IStatus doLaunch(final File application, List<String> args) throws LaunchException {
 
 		// Arguments for OS X in reverse order
 		args.add(0, "--args"); //$NON-NLS-1$
-		args.add(0, app.getAbsolutePath());
+		args.add(0, application.getAbsolutePath());
 		args.add(0, "-n"); //$NON-NLS-1$
 		args.add(0, "open"); //$NON-NLS-1$
 		StringBuilder sb = new StringBuilder();

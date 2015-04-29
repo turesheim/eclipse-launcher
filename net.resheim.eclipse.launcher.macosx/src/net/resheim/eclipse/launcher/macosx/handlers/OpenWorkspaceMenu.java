@@ -115,12 +115,12 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 							ec.setVmXmx(dialog.getXmx());
 							ec.setVmXms(dialog.getXms());
 							if (!dialog.getDebugMode().equals(DebugMode.Normal)) {
-								ec.setRemoteDebug(dialog.getDebugPort(), dialog.getDebugMode()
-										.equals(DebugMode.Suspend));
+								ec.setRemoteDebug(dialog.getDebugPort(),
+										dialog.getDebugMode().equals(DebugMode.Suspend));
 							}
-
-							LauncherPlugin.getDefault().doLaunch(workspace, application, cmd, ec.toString(),
+							List<String> args = LauncherPlugin.buildCommandLine(workspace, cmd, ec.toString(),
 									vm.getPath());
+							LauncherPlugin.getDefault().doLaunch(application, args);
 						} catch (LaunchException | IOException e) {
 							IStatus newStatus = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
 									"Could not start new Eclipse instance", e); //$NON-NLS-1$

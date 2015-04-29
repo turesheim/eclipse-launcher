@@ -26,7 +26,7 @@ import java.util.Set;
  * type only as API for modifying certain parts of the <i>eclipse.ini</i>
  * configuration.
  *
- * @since 2.0
+ * @since 1.0
  */
 public class EclipseConfiguration {
 

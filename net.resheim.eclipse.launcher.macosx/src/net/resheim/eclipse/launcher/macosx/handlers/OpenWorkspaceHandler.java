@@ -12,6 +12,7 @@
 package net.resheim.eclipse.launcher.macosx.handlers;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -78,8 +79,8 @@ public class OpenWorkspaceHandler extends AbstractHandler {
 							}
 							String cmd = System.getProperty(PROP_COMMANDS);
 							String vmargs = System.getProperty(PROP_VMARGS);
-							// Override
-							status = LauncherPlugin.getDefault().doLaunch(workspace, application, cmd, vmargs, vm);
+							List<String> args = LauncherPlugin.buildCommandLine(workspace, cmd, vmargs, vm);
+							status = LauncherPlugin.getDefault().doLaunch(application, args);
 						} catch (Exception e) {
 							status = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
 									"Could not execute OpenWorkspaceHandler", e); //$NON-NLS-1$
