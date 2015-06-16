@@ -294,9 +294,13 @@ public class LauncherPlugin extends AbstractUIPlugin {
 			// We need to use the Eclipse.app folder so that the application
 			// is opened properly. Otherwise we'll also open a shell which is
 			// not desirable.
-			final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
-			if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
-				return application;
+			if (Platform.getOS().equals(Platform.OS_MACOSX)) {
+				final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
+				if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
+					return application;
+				}
+			} else {
+				return new File(launcher);
 			}
 		}
 		return null;
