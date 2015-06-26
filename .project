@@ -19,4 +19,15 @@
 	<natures>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1433328435112</id>
+			<name></name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-net.resheim.*</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>
