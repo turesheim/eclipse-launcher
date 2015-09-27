@@ -14,7 +14,7 @@ deploy:
   file_glob: true
   file: ${HOME}/build/${TRAVIS_REPO_SLUG}/net.resheim.eclipse.launcher-site/target/net.resheim.eclipse.launcher-*.zip
   on:
-    repo: turesheim/eclipse-utilities
+    repo: turesheim/eclipse-launcher
     tags: true
     all_branches: true
     
