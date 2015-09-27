@@ -17,6 +17,8 @@ Note that OS X 10.6 or newer is required as this feature relies on the [open](ht
 
 You can install from the <a href="http://marketplace.eclipse.org/content/osx-eclipse-launcher">Eclipse Marketplace</a> or drag <a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=364668" title="Drag and drop into a running Eclipse workspace to install OSX Eclipse Launcher"><img src="https://marketplace.eclipse.org/sites/all/modules/custom/marketplace/images/installbutton.png" style="border: 0px; margin:0px; padding:0px; vertical-align:bottom;"/></a> into an running Eclipse instance.
 
+If you have a version older than 3.0 installed you must uninstall this before installing version 3.0 or newer. Go to **Eclipse > About Eclipse > Installation Details**, select "OS X Eclipse Launcher Utility" and click **Uninstall...**. Automatic update from 2.0 or older to 3.0 or newer will not work and keeping both versions installed will lead to unpredictable behaviour.
+
 ## Building
 
 Clone the project and from the root execute:

@@ -1,9 +1,9 @@
 ## Changes
 
-### Version 3.0.0 (2015-xx-xx)
+### Version 3.0.0 (2015-09-27)
 * Spring cleaning:
   * Removed the OS X Quick Look feature that was introduced in 1.3.0. It was not very popular and to put it frankly; not very useful.
-  * Renamed all bundles from "no.resheim.eclipse.utils.*" to "net.resheim.eclipse.launcher" version numbering will now reflect the version of the launcher feature, Hence the jump from 1.4.0 to 3.0.0.
+  * Renamed all bundles from "no.resheim.eclipse.utils.*" to "net.resheim.eclipse.launcher" version numbering will now reflect the version of the launcher feature, Hence the jump from 1.4.0 to 3.0.0. This also means that the feature "no.resheim.eclipse.utils.launcher" cannot be upgraded, one must uninstall this and install "net.resheim.eclipse.launcher" instead. 
   * Travis-CI infrastructure is set up for the project. This enables continous building and makes it easier for contributors.
   * Updated branding and EULA.
 * Added "-clean" feature to the "Advanced" dialog for clearing OSGi and runtime caches.
