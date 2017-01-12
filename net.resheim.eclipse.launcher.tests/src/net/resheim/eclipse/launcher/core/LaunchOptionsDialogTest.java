@@ -15,8 +15,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -25,6 +30,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.AfterClass;
@@ -44,15 +50,22 @@ public class LaunchOptionsDialogTest {
 	public static void beforeClass() {
 		bot = new SWTWorkbenchBot();
 		String screenshots = System.getProperty("screenshots");
+		if (screenshots == null) {
+			screenshots = "screenshots";
+		}
 		screenshotsDir = new File(screenshots);
+		if (!screenshotsDir.exists()) {
+			screenshotsDir.mkdirs();
+		}
 	}
 
 	@Test
-	public void canOpenAdvancedDialog() throws IOException {
+	public void canOpenAdvancedDialog() throws Exception {
 		// Activate the menu item
 		bot.menu("File").menu("Open Workspace").menu("Advanced...").click();
+		bot.waitUntil(Conditions.shellIsActive("Open Workspace"), 2000);
+
 		SWTBotShell shell = bot.shell("Open Workspace");
-		shell.activate();
 
 		// Set the workspace path
 		File workspace = new File("/Users/Nescio/Eclipse/Workspace");
@@ -98,17 +111,31 @@ public class LaunchOptionsDialogTest {
 				gc2.drawImage(screenshot, RADIUS / 2, RADIUS / 2);
 
 				String text = shell.getText().replace(' ', '_') + ".png";
-				File file = new File(screenshotsDir, text);
+				Path path = Paths.get(screenshotsDir.getAbsolutePath(), text);
 				ImageLoader loader = new ImageLoader();
-				loader.load(file.getAbsolutePath());
+				try {
+					// overwrite the existing file if different
+					if (path.toFile().exists()) {
+						try {
+							loader.load(Files.newInputStream(path, StandardOpenOption.READ));
+							Image original = new Image(shell.getDisplay(), loader.data[0]);
 
-				Image original = new Image(shell.getDisplay(), file.getAbsolutePath());
-
-				if (!original.getImageData().equals(image.getImageData())) {
+							if (!original.getImageData().equals(image.getImageData())) {
+								loader.data = new ImageData[] { image.getImageData() };
+								loader.save(Files.newOutputStream(path, StandardOpenOption.WRITE), SWT.IMAGE_PNG);
+							}
+						} catch (SWTException e) {
+							// probably broken image file, just continue and
+							// overwrite it
+						}
+						return;
+					}
 					loader.data = new ImageData[] { image.getImageData() };
-					loader.save(file.getAbsolutePath(), SWT.IMAGE_PNG);
+					loader.save(Files.newOutputStream(path, StandardOpenOption.WRITE), SWT.IMAGE_PNG);
+					gc.dispose();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				gc.dispose();
 			}
 		});
 	}
