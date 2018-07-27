@@ -21,6 +21,12 @@ public class Messages extends NLS {
 
 	public static String OpenWorkspaceMenu_Advanced;
 
+	public static String OpenWorkspaceMenu_LaunchFailedTitle;
+
+	public static String OpenWorkspaceMenu_LaunchFailed;
+
+	public static String OpenWorkspaceMenu_Launching;
+
 	public static String OpenWorkspaceMenu_Open;
 
 	public static String OpenWorkspaceMenu_Other;
