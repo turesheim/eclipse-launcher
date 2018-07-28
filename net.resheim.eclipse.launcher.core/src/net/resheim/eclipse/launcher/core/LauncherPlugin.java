@@ -13,6 +13,7 @@ package net.resheim.eclipse.launcher.core;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
@@ -290,20 +291,58 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 */
 	public File getLauncherApplication() {
 		String launcher = System.getProperty("eclipse.launcher"); //$NON-NLS-1$
-		if (launcher != null) {
-			// We need to use the Eclipse.app folder so that the application
-			// is opened properly. Otherwise we'll also open a shell which is
-			// not desirable.
-			if (Platform.getOS().equals(Platform.OS_MACOSX)) {
-				final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
-				if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
-					return application;
-				}
-			} else {
-				return new File(launcher);
-			}
+		if (launcher == null) {
+			throw new IllegalStateException("Property 'eclipse.launcher' not set. Check your Eclipse installation!"); //$NON-NLS-1$
 		}
-		return null;
+
+		// We need to use the Eclipse.app folder so that the application
+		// is opened properly. Otherwise we'll also open a shell which is
+		// not desirable.
+		if (isRunningOnMacOs()) {
+			final File application = new File(launcher).getParentFile().getParentFile().getParentFile();
+			if (application.exists() && application.isDirectory() && application.getName().endsWith(".app")) { //$NON-NLS-1$
+				return application;
+			}
+			StatusManager.getManager().handle(
+					new Status(IStatus.WARNING, PLUGIN_ID, "Unknonw app layout detected. Using default."), //$NON-NLS-1$
+					StatusManager.LOG);
+		}
+		return new File(launcher);
+	}
+
+	/**
+	 * Returns the Eclipse executable configuration file (eclipse.ini) that
+	 * belongs to the specified launcher.
+	 *
+	 * @param launcherApplication
+	 *            as detected and returned by {@link #getLauncherApplication()}
+	 * @return the launcher ini file
+	 * @since 3.0
+	 * @throws FileNotFoundException
+	 *             in case the launcher ini file does not exist
+	 */
+	public File getLauncherIniFile(File launcherApplication) throws FileNotFoundException {
+		if (launcherApplication == null || !launcherApplication.exists()) {
+			throw new IllegalArgumentException("Invalid launcher application: " + launcherApplication); //$NON-NLS-1$
+		}
+
+		// Attempt to figure out the corresponding ".ini" file
+		final File inifile;
+		if (isRunningOnMacOs() && launcherApplication.isDirectory()) {
+			inifile = new File(launcherApplication, "Contents/Eclipse/eclipse.ini"); //$NON-NLS-1$
+		} else {
+			inifile = new File(launcherApplication.getParentFile(), "eclipse.ini"); //$NON-NLS-1$
+		}
+
+		if (!inifile.isFile()) {
+			throw new FileNotFoundException("Launcher ini file not found: " + inifile); //$NON-NLS-1$
+		}
+
+		return inifile;
+	}
+
+	public boolean isRunningOnMacOs() {
+		return Platform.getOS().equals(Platform.OS_MACOSX);
 	}
 
 	@Override

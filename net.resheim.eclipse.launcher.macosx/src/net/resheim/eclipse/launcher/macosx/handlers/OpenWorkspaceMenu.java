@@ -19,9 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
@@ -35,11 +37,12 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.menus.ExtensionContributionFactory;
 import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
+import org.eclipse.ui.statushandlers.IStatusAdapterConstants;
+import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import net.resheim.eclipse.launcher.core.EclipseConfiguration;
 import net.resheim.eclipse.launcher.core.JRE;
-import net.resheim.eclipse.launcher.core.LaunchException;
 import net.resheim.eclipse.launcher.core.LauncherPlugin;
 import net.resheim.eclipse.launcher.macosx.LaunchOptionsDialog;
 import net.resheim.eclipse.launcher.macosx.LaunchOptionsDialog.DebugMode;
@@ -67,9 +70,9 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 			data.readPersistedData();
 			String current = data.getInitialDefault();
 			String[] workspaces = data.getRecentWorkspaces();
-			for (int i = 0; i < workspaces.length; i++) {
-				if (workspaces[i] != null && !workspaces[i].equals(current)) {
-					list.add(createOpenCommand(serviceLocator, workspaces[i], workspaces[i]));
+			for (String workspace : workspaces) {
+				if (workspace != null && !workspace.equals(current)) {
+					list.add(createOpenCommand(serviceLocator, workspace, workspace));
 				}
 			}
 			if (!list.isEmpty()) {
@@ -93,18 +96,15 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 			public void run() {
 				LaunchOptionsDialog dialog = new LaunchOptionsDialog(Display.getCurrent().getActiveShell());
 				if (dialog.open() == Window.OK) {
-					File application = LauncherPlugin.getDefault().getLauncherApplication();
-					if (application != null) {
-						String workspace = dialog.getWorkspaceLocation();
-						JRE vm = dialog.getJVm();
-						String cmd = System.getProperty(LauncherPlugin.PROP_COMMANDS);
-						// Signal that vm arguments will be overridden.
-						cmd = cmd + " --launcher.overrideVmargs"; //$NON-NLS-1$
-						// Attempt to figure out the name of the Eclipse
-						// launcher and it's corresponding ".ini" file
-						String launcher = System.getProperty("eclipse.launcher"); //$NON-NLS-1$
-						File inifile = new File(launcher + ".ini"); //$NON-NLS-1$
+					Job.create(Messages.OpenWorkspaceMenu_Launching, (IProgressMonitor monitor) -> {
 						try {
+							File application = LauncherPlugin.getDefault().getLauncherApplication();
+							String workspace = dialog.getWorkspaceLocation();
+							JRE vm = dialog.getJVm();
+							String cmd = System.getProperty(LauncherPlugin.PROP_COMMANDS);
+							// Signal that vm arguments will be overridden.
+							cmd = cmd + " --launcher.overrideVmargs"; //$NON-NLS-1$
+							File inifile = LauncherPlugin.getDefault().getLauncherIniFile(application);
 							EclipseConfiguration ec = new EclipseConfiguration(new FileInputStream(inifile));
 							if (dialog.isDisableSmallFonts()) {
 								ec.removeVmSetting("-Dorg.eclipse.swt.internal.carbon.smallFonts"); //$NON-NLS-1$
@@ -121,12 +121,14 @@ public class OpenWorkspaceMenu extends ExtensionContributionFactory {
 							List<String> args = LauncherPlugin.buildCommandLine(workspace, cmd, ec.toString(),
 									vm.getPath());
 							LauncherPlugin.getDefault().doLaunch(application, args);
-						} catch (LaunchException | IOException e) {
-							IStatus newStatus = new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
-									"Could not start new Eclipse instance", e); //$NON-NLS-1$
-							StatusManager.getManager().handle(newStatus);
+						} catch (RuntimeException | IOException e) {
+							StatusAdapter status = new StatusAdapter(new Status(IStatus.ERROR, LauncherPlugin.PLUGIN_ID,
+									Messages.OpenWorkspaceMenu_LaunchFailed, e));
+							status.setProperty(IStatusAdapterConstants.TITLE_PROPERTY,
+									Messages.OpenWorkspaceMenu_LaunchFailedTitle);
+							StatusManager.getManager().handle(status, StatusManager.SHOW);
 						}
-					}
+					}).schedule();
 				}
 			}
 
