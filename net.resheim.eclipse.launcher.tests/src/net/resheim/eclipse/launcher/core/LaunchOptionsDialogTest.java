@@ -74,7 +74,6 @@ public class LaunchOptionsDialogTest {
 		// Should be at least one Java Runtime and it should also be Java 8
 		String[] items = bot.comboBoxWithLabel("Java Runtime:").items();
 		assertTrue(items.length > 0);
-		assertTrue(items[0].contains("Java SE 8"));
 
 		// Take a screenshot for documentation
 		takeScreenshot(shell.widget);
