@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class LaunchOptionsDialogTest {
 
-	private static final int RADIUS = 16;
+	private static final int RADIUS = 32;
 	private static SWTWorkbenchBot bot;
 	/** Location for documentation screenshots */
 	private static File screenshotsDir;
@@ -65,8 +65,6 @@ public class LaunchOptionsDialogTest {
 		bot.menu("File").menu("Open Workspace").menu("Advanced...").click();
 		bot.waitUntil(Conditions.shellIsActive("Open Workspace"), 2000);
 
-		SWTBotShell shell = bot.shell("Open Workspace");
-
 		// Set the workspace path
 		File workspace = new File("/Users/Nescio/Eclipse/Workspace");
 		bot.comboBoxWithLabel("Workspace:").setText(workspace.getAbsolutePath());
@@ -76,6 +74,7 @@ public class LaunchOptionsDialogTest {
 		assertTrue(items.length > 0);
 
 		// Take a screenshot for documentation
+		SWTBotShell shell = bot.activeShell();
 		takeScreenshot(shell.widget);
 	}
 
@@ -99,18 +98,26 @@ public class LaunchOptionsDialogTest {
 			public void run() {
 				// Grab a screenshot of the dialog shell
 				final Rectangle b = shell.getBounds();
-				final Image screenshot = new Image(shell.getDisplay(), b.width, b.height);
+				int width = b.width;
+				int height = b.height;
+				final Image screenshot = new Image(shell.getDisplay(), width, height);
 				GC gc = new GC(shell.getDisplay());
 				gc.copyArea(screenshot, b.x, b.y);
+				gc.dispose();
 
 				// Create drop shadow image
-				final Image image = new Image(shell.getDisplay(), b.width + RADIUS, b.height + RADIUS);
+				final Image image = new Image(shell.getDisplay(), width * 2, height * 2);
 				GC gc2 = new GC(image);
+				gc2.setInterpolation(SWT.HIGH);
+				gc2.setAntialias(SWT.ON);
+				int border = RADIUS / 2;
 				fillRoundRectangleDropShadow(gc2, image.getBounds(), RADIUS);
-				gc2.drawImage(screenshot, RADIUS / 2, RADIUS / 2);
-
-				String text = shell.getText().replace(' ', '_') + ".png";
-				Path path = Paths.get(screenshotsDir.getAbsolutePath(), text);
+				gc2.drawImage(screenshot, 0, 0, 
+						width, height, border, border, width * 2 - RADIUS, height * 2 - RADIUS);
+				screenshot.dispose();
+				gc2.dispose();
+				String filename = shell.getText().replace(' ', '_') + ".png";
+				Path path = Paths.get(screenshotsDir.getAbsolutePath(), filename);
 				ImageLoader loader = new ImageLoader();
 				try {
 					// overwrite the existing file if different
@@ -123,15 +130,17 @@ public class LaunchOptionsDialogTest {
 								loader.data = new ImageData[] { image.getImageData() };
 								loader.save(Files.newOutputStream(path, StandardOpenOption.WRITE), SWT.IMAGE_PNG);
 							}
+							original.dispose();
 						} catch (SWTException e) {
 							// probably broken image file, just continue and
 							// overwrite it
 						}
+						screenshot.dispose();
 						return;
 					}
 					loader.data = new ImageData[] { image.getImageData() };
-					loader.save(Files.newOutputStream(path, StandardOpenOption.WRITE), SWT.IMAGE_PNG);
-					gc.dispose();
+					loader.save(Files.newOutputStream(path, StandardOpenOption.CREATE), SWT.IMAGE_PNG);
+					image.dispose();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
