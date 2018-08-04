@@ -29,4 +29,4 @@ When successful there will be a Eclipse p2 repository at *net.resheim.eclipse.la
 
 ## License
 
-Copyright © 2012-2015 Torkild Ulvøy Resheim. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
+Copyright © 2012-2018 Torkild Ulvøy Resheim and contributors. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this dis8ribution, and is available at http://www.eclipse.org/legal/epl-v10.html
