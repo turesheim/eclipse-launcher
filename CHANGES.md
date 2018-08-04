@@ -1,5 +1,8 @@
 ## Changes
 
+### Version 3.0.1 (2018-08-05)
+* Fixed the "Advanced" dialog which was broken under Eclipse Photon.
+
 ### Version 3.0.0 (2015-09-27)
 * Spring cleaning:
   * Removed the OS X Quick Look feature that was introduced in 1.3.0. It was not very popular and to put it frankly; not very useful.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/net.resheim.eclipse.launcher_3.0.0.qualifier.jar" id="net.resheim.eclipse.launcher" version="3.0.0.qualifier" os="macosx" ws="cocoa" arch="x86_64">
+   <feature url="features/net.resheim.eclipse.launcher_3.0.1.qualifier.jar" id="net.resheim.eclipse.launcher" version="3.0.1.qualifier" os="macosx" ws="cocoa" arch="x86_64">
       <category name="main"/>
    </feature>
    <category-def name="main" label="Eclipse Launcher for OS X">
