@@ -5,16 +5,15 @@ jdk:
   - oraclejdk8
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 deploy:
   provider: releases
   skip_cleanup: true
+  file_glob: true   
+  file: "${HOME}/build/${TRAVIS_REPO_SLUG}/net.resheim.eclipse.launcher-site/target/net.resheim.eclipse.launcher-*.zip"
   api_key:
-    secure: B8c3qW9LC01YqsRAMtHc3S5fnhFxcTiRqoKIoLZJcFQi+nci21d7QIv9eMyUxupKDokfXjqW2yc1JNN7VU25U/rU8vbfIEEoH6TqWOGiwSL+dF718GM5UHdnM/2cbefo9WU/bBQzfNV+fR881y5auasAZns87oFNQ4PIyQ2xpwQ=
-  file_glob: true
-  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/net.resheim.eclipse.launcher-site/target/net.resheim.eclipse.launcher-*.zip
+    secure: iVJL4mNY5GG6o32foel+hVV6wDgfg6uMi2G5iHd3lzDdhgtrkqeWcfdJu/gVl7MmQiJzevnnBFbOLpsvXj0RDMEuYWszrnf9ke87P8vqMvpMkoDRHh9z0gaEq4pnsb4BQMxdU+RYOvbXZc7VKuChwxyT5TX35XWZbIJtVyBwaa0=
   on:
     repo: turesheim/eclipse-launcher
     tags: true
     all_branches: true
-    
