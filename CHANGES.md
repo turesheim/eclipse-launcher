@@ -1,5 +1,9 @@
 ## Changes
 
+### Version 3.0.2
+
+** No changes yet **
+
 ### Version 3.0.1 (2018-08-05)
 * Fixed the "Advanced" dialog which was broken under Eclipse Photon.
 

@@ -8,11 +8,10 @@
 		<artifactId>net.resheim.eclipse.launcher-parent</artifactId>
 		<relativePath>../pom.xml</relativePath>
 		<groupId>net.resheim.eclipse.launcher</groupId>
-		<version>3.0.1-SNAPSHOT</version>
+		<version>3.0.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>net.resheim.eclipse.launcher</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<version>3.0.1-SNAPSHOT</version>
 
 </project>
