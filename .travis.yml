@@ -2,8 +2,9 @@ dist: trusty
 sudo: required
 language: java
 
+# UI-tests will only run on macOS, so we skip these here
 script: 
-  - mvn clean verify -Pskip-ui-tests
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify -Pskip-ui-tests
   - sonar-scanner
 jdk:
   - oraclejdk8
