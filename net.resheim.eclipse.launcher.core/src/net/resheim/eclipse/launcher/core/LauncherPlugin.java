@@ -235,8 +235,11 @@ public class LauncherPlugin extends AbstractUIPlugin {
 							"Could not execute OpenWorkspaceHandler." + sb.toString()); //$NON-NLS-1$
 				}
 			}
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
 			throw new LaunchException(e);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return new Status(IStatus.ERROR, PLUGIN_ID, "Could not launch new instance", e); //$NON-NLS-1$
 		}
 		return Status.OK_STATUS;
 	}
