@@ -41,7 +41,9 @@ public class WorkspaceDecorator implements IWorkspaceDecorator {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				TaskItem item = getTaskBarItem();
-				item.setOverlayText(name);
+				if (item != null) {
+					item.setOverlayText(name);
+				}
 			}
 		});
 	}
