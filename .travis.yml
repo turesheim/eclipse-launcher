@@ -1,8 +1,17 @@
+dist: trusty
+sudo: required
 language: java
-sudo: false
-script: mvn clean verify -Pskip-ui-tests
+
+script: 
+  - mvn clean verify -Pskip-ui-tests
+  - sonar-scanner
 jdk:
   - oraclejdk8
+addons:
+  sonarcloud:
+    organization: "turesheim-github"
+    token:
+      secure: "fmYWxhxPFrNTDrA0Wpqg0iBB6o+JIbl9g9Jba/VQYnqZ6YmSBlt1gUS88YmhWCQEQ3UmvvmagoQ+vZysbVzKz/urfJc4V/6Wbvk4kLcdvCuO1lRs/M7m1RGEJGzYXPVDn0Fs65lm9uVQboc3PgyebOP6C9UJTChVkx6qe7rtyY4="
 cache:
   directories:
   - "$HOME/.m2"
