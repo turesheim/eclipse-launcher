@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014-2015 Torkild U. Resheim.
+ * Copyright (c) 2014-2019 Torkild U. Resheim.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -107,6 +108,7 @@ public class OSXJavaLocator extends DefaultHandler implements IJavaLocatorServic
 		if (runtimes.isEmpty()) {
 			try {
 				SAXParserFactory factory = SAXParserFactory.newInstance();
+				factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 				factory.setValidating(false);
 				factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
 				SAXParser saxParser = factory.newSAXParser();
