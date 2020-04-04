@@ -45,7 +45,10 @@ public class LauncherPluginTest extends LauncherPlugin {
 	private static final String ECLIPSE_VM_FULL = "/path/to/vm/Contents/Home/bin/java";
 
 	/** <full path to the virtual machine library> */
-	private static final String ECLIPSE_VM_FULL_LIB = "/path/to/vm/Contents/Home/jre/lib/server/libjvm.dylib";
+	private static final String ECLIPSE_VM_FULL_JVM_LIB = "/path/to/vm/Contents/Home/jre/lib/server/libjvm.dylib";
+
+	/** <full path to the launcher interface library> */
+	private static final String ECLIPSE_VM_FULL_JLI_LIB = "/path/to/vm/Contents/Home/jre/lib/server/libjli.dylib";
 
 	/** <full path to the virtual machine> */
 	private static final String ECLIPSE_VM_HOME = "/path/to/vm/Contents/Home";
@@ -170,12 +173,24 @@ public class LauncherPluginTest extends LauncherPlugin {
 		Assert.assertEquals("some", args.get(2));
 	}
 
-	public void testCommandLineDylibVM() {
+	@Test
+	public void testBuildCommandLineWithJVMDylib() {
 		LauncherPlugin.getDefault();
-		List<String> args = LauncherPlugin.buildCommandLine(null, ECLIPSE_COMMANDS, null, ECLIPSE_VM_FULL_LIB);
+		List<String> args = LauncherPlugin.buildCommandLine(null, ECLIPSE_COMMANDS, null, ECLIPSE_VM_FULL_JVM_LIB);
 		Assert.assertEquals(3, args.size());
 		Assert.assertEquals("-vm", args.get(0));
-		Assert.assertEquals(ECLIPSE_VM_FULL_LIB, args.get(1));
+		Assert.assertEquals(ECLIPSE_VM_FULL_JVM_LIB, args.get(1));
 		Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
 	}
+
+	@Test
+	public void testBuildCommandLineWithJLIDylib() {
+		LauncherPlugin.getDefault();
+		List<String> args = LauncherPlugin.buildCommandLine(null, ECLIPSE_COMMANDS, null, ECLIPSE_VM_FULL_JLI_LIB);
+		Assert.assertEquals(3, args.size());
+		Assert.assertEquals("-vm", args.get(0));
+		Assert.assertEquals(ECLIPSE_VM_FULL_JLI_LIB, args.get(1));
+		Assert.assertEquals(ECLIPSE_COMMANDS, args.get(2));
+	}
+
 }

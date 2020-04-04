@@ -149,7 +149,7 @@ public class LauncherPlugin extends AbstractUIPlugin {
 			if (!vm.startsWith(APPLE_JAVA)) {
 				if (vm.endsWith("Contents/Home")) { //$NON-NLS-1$
 					vm = vm + "/bin/java"; //$NON-NLS-1$
-				} else if (!vm.endsWith("java") && !vm.endsWith("libjvm.dylib")) { //$NON-NLS-1$ //$NON-NLS-2$
+				} else if (!vm.endsWith("java") && !vm.endsWith("libjvm.dylib") && !vm.endsWith("libjli.dylib")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					vm = vm + "/Contents/Home/bin/java"; //$NON-NLS-1$
 				}
 			}
