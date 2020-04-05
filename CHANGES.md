@@ -1,8 +1,10 @@
 ## Changes
 
-### Version 3.0.2
+### Version 3.0.2 (2020-04-26)
 
-** No changes yet **
+* Added support to use a path to the `libjli.dylib` as `-vm` argument. In macOS the only way to use a JDK downloaded 
+  with SDKMAN (or any other JDK that does not have the macOS directory layout) is specifying the path to the 
+  libjli.dylib file, like `-vm /<PATH_TO_YOUR_JDK>/jre/lib/jli/libjli.dylib`. 
 
 ### Version 3.0.1 (2018-08-05)
 * Fixed the "Advanced" dialog which was broken under Eclipse Photon.
