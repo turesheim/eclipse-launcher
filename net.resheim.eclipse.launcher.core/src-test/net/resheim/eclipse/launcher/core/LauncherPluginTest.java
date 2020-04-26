@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012-2015 Torkild U. Resheim
+ * Copyright (c) 2012-2015 Torkild U. Resheim and others
  *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Torkild U. Resheim - initial API and implementation
+ *   Torkild U. Resheim - initial API and implementation
+ *   Martin D'Aloia - Add support to use a path to the libjli.dylib as -vm argument
  *******************************************************************************/
 package net.resheim.eclipse.launcher.core;
 
@@ -15,8 +16,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import net.resheim.eclipse.launcher.core.LauncherPlugin;
 
 /**
  * @since 2.0
