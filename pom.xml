@@ -11,7 +11,7 @@
 
 	<groupId>net.resheim.eclipse.launcher</groupId>
 	<artifactId>net.resheim.eclipse.launcher-parent</artifactId>
-	<version>3.0.3</version>
+	<version>3.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Eclipse Launcher</name>
@@ -73,7 +73,7 @@
 						<artifact>
 							<groupId>net.resheim.eclipse.launcher</groupId>
 							<artifactId>net.resheim.eclipse.launcher-parent</artifactId>
-							<version>3.0.3</version>
+							<version>3.0.3-SNAPSHOT</version>
 							<classifier>default</classifier>
 						</artifact>
 					</target>
