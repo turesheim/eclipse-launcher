@@ -1,4 +1,4 @@
-## OS X Eclipse Launcher [![Build Status](https://travis-ci.org/turesheim/eclipse-launcher.svg?branch=master)](https://travis-ci.org/turesheim/eclipse-launcher) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=turesheim_eclipse-launcher&metric=alert_status)](https://sonarcloud.io/dashboard/index/turesheim_eclipse-launcher)
+## OS X Eclipse Launcher
 
 This feature will add an **Open Workspace** menu item that will detect the application of the running Eclipse instance 
 and start another in a fashion similar to the **Switch Workspace** command.
