@@ -21,7 +21,7 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<repositoryName>Eclipse Launcher</repositoryName>
-					<finalName>${project.groupId}-${unqualifiedVersion}.${buildQualifier}</finalName>
+					<finalName>repository</finalName>
 					<additionalFileSets>
 						<fileSet>
 							<directory>${basedir}/resources</directory>

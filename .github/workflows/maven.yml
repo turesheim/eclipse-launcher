@@ -25,3 +25,9 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -T 1C clean org.jacoco:jacoco-maven-plugin:prepare-agent verify -Pskip-ui-tests
+
+    - name: Upload p2 repository
+      uses: actions/upload-artifact@v1
+      with:
+        name: p2-repository
+        path: net.resheim.eclipse.launcher-site/target/repository
