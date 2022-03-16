@@ -8,7 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 		<artifactId>net.resheim.eclipse.launcher-parent</artifactId>
 		<groupId>net.resheim.eclipse.launcher</groupId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3</version>
 	</parent>
 
 	<artifactId>net.resheim.eclipse.launcher.macosx</artifactId>
