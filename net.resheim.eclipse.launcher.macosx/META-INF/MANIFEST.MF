@@ -13,4 +13,4 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
 Export-Package: net.resheim.eclipse.launcher.macosx,
  net.resheim.eclipse.launcher.macosx.handlers;x-friends:="net.resheim.eclipse.launcher.tests"
-Eclipse-PlatformFilter: (& (osgi.ws=cocoa) (osgi.os=macosx) (osgi.arch=x86_64))
+Eclipse-PlatformFilter: (& (osgi.ws=cocoa) (osgi.os=macosx))
