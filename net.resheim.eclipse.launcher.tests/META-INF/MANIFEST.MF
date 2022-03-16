@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtbot.go;bundle-version="2.5.0",
  org.apache.log4j;bundle-version="1.2.15"
 Eclipse-RegisterBuddy: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
