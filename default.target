@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
-<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="Eclipse Launcher Target Platform" sequenceNumber="1532855227">
+<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
+<target name="Eclipse Launcher Target Platform" sequenceNumber="1647466945">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.equinox.p2.sdk.feature.group" version="3.10.3.v20180207-1239"/>
-      <unit id="org.eclipse.sdk.feature.group" version="4.7.3.v20180330-0919"/>
-      <unit id="org.eclipse.pde.core" version="3.11.101.v20171228-1230"/>
-      <unit id="org.eclipse.emf.ecore" version="2.13.0.v20170609-0707"/>
-      <unit id="org.eclipse.emf.ecore.xmi" version="2.13.0.v20170609-0707"/>
-      <unit id="org.eclipse.emf.ecore.change" version="2.11.0.v20170609-0707"/>
-      <unit id="org.eclipse.emf.common" version="2.13.0.v20170609-0707"/>
+      <unit id="org.eclipse.equinox.p2.sdk.feature.group" version="3.11.1400.v20211104-1616"/>
+      <unit id="org.eclipse.sdk.feature.group" version="4.22.0.v20211124-1800"/>
+      <unit id="org.eclipse.pde.core" version="3.15.0.v20211020-1251"/>
+      <unit id="org.eclipse.emf.ecore" version="2.25.0.v20210816-0937"/>
+      <unit id="org.eclipse.emf.ecore.xmi" version="2.16.0.v20190528-0725"/>
+      <unit id="org.eclipse.emf.ecore.change" version="2.14.0.v20190528-0725"/>
+      <unit id="org.eclipse.emf.common" version="2.23.0.v20210924-1718"/>
       <unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
       <unit id="org.apache.commons.collections" version="3.2.2.v201511171945"/>
-      <repository location="http://download.eclipse.org/releases/oxygen/"/>
+      <repository location="http://download.eclipse.org/releases/2021-12/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.swtbot.forms.source.feature.group" version="2.7.0.201806111355"/>
