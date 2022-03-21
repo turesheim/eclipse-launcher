@@ -1,5 +1,9 @@
 ## Changes
 
+### Version 3.0.3 (2022-03-21)
+
+* Added support for installing the plug-in on a M1 based macBook (aarch64).
+
 ### Version 3.0.2 (2020-04-26)
 
 * Added support to use a path to the `libjli.dylib` as `-vm` argument. In macOS the only way to use a JDK downloaded 
